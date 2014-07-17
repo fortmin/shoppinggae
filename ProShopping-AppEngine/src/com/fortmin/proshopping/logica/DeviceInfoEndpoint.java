@@ -1,7 +1,6 @@
-package com.fortmin.proshopping;
+package com.fortmin.proshopping.logica;
 
-import com.fortmin.proshopping.EMF;
-
+import com.fortmin.proshopping.logica.EMF;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;

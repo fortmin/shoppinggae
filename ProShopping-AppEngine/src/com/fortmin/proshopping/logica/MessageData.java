@@ -1,4 +1,4 @@
-package com.fortmin.proshopping;
+package com.fortmin.proshopping.logica;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,13 +1,13 @@
-package com.fortmin.proshopping;
+package com.fortmin.proshopping.logica;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 
+import com.fortmin.proshopping.persistencia.Paquete;
+import com.fortmin.proshopping.persistencia.Producto;
+import com.fortmin.proshopping.persistencia.Ubicacion;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -20,15 +20,14 @@ public class Shopping {
 	 * Shopping
 	 */
 	@ApiMethod(name = "insertubicacion", path = "insert_ubicacion")
-	public Ubicacion insertUbicacion(@Named("nombre") String nombre,
+	public void insertUbicacion(@Named("nombre") String nombre,
 			@Named("edificio") String edificio, @Named("piso") int piso,
 			@Named("sector") String sector, @Named("area") String area,
 			@Named("lugar") String lugar) {
-		UbicacionEndpoint endpoint = new UbicacionEndpoint();
-		Ubicacion ubicacion = new Ubicacion(nombre, edificio, piso, sector,
-				area, lugar);
-		ubicacion = endpoint.insertUbicacion(ubicacion);
-		return ubicacion;
+		EntityManager mgr = getEntityManager();
+		Ubicaciones ubic = new Ubicaciones();
+		ubic.insertUbicacion(mgr, nombre, edificio, piso, sector, area, lugar);
+		mgr.close();
 	}
 
 	/*
@@ -36,15 +35,14 @@ public class Shopping {
 	 * del Shopping
 	 */
 	@ApiMethod(name = "updateubicacion", path = "update_ubicacion")
-	public Ubicacion updateUbicacion(@Named("nombre") String nombre,
+	public void updateUbicacion(@Named("nombre") String nombre,
 			@Named("edificio") String edificio, @Named("piso") int piso,
 			@Named("sector") String sector, @Named("area") String area,
 			@Named("lugar") String lugar) {
-		UbicacionEndpoint endpoint = new UbicacionEndpoint();
-		Ubicacion ubicacion = new Ubicacion(nombre, edificio, piso, sector,
-				area, lugar);
-		ubicacion = endpoint.updateUbicacion(ubicacion);
-		return ubicacion;
+		EntityManager mgr = getEntityManager();
+		Ubicaciones ubic = new Ubicaciones();
+		ubic.updateUbicacion(mgr, nombre, edificio, piso, sector, area, lugar);
+		mgr.close();
 	}
 
 	/*
@@ -53,8 +51,10 @@ public class Shopping {
 	 */
 	@ApiMethod(name = "deleteubicacion", path = "delete_ubicacion")
 	public void deleteUbicacion(@Named("ubicacion") String nomubi) {
-		UbicacionEndpoint endpoint = new UbicacionEndpoint();
-		endpoint.removeUbicacion(nomubi);
+		EntityManager mgr = getEntityManager();
+		Ubicaciones ubic = new Ubicaciones();
+		ubic.deleteUbicacion(mgr, nomubi);
+		mgr.close();
 	}
 
 	/*
@@ -63,9 +63,11 @@ public class Shopping {
 	 */
 	@ApiMethod(name = "getubicacion", path = "get_ubicacion")
 	public Ubicacion getUbicacion(@Named("ubicacion") String nombre) {
-		UbicacionEndpoint endpoint = new UbicacionEndpoint();
-		Ubicacion gUbicacion = endpoint.getUbicacion(nombre);
-		return gUbicacion;
+		EntityManager mgr = getEntityManager();
+		Ubicaciones ubic = new Ubicaciones();
+		Ubicacion resp = ubic.getUbicacion(mgr, nombre);
+		mgr.close();
+		return resp;
 	}
 
 	/*
@@ -75,14 +77,8 @@ public class Shopping {
 	public void insertComercio(@Named("comercio") String nomcom,
 			@Named("ubicacion") String ubicacion) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Comercio comercio = mgr.find(Comercio.class, nomcom);
-		if (comercio == null) {
-			comercio = new Comercio(nomcom, ubicacion);
-			mgr.persist(comercio);
-		}
-		trans.commit();
+		Comercios comer = new Comercios();
+		comer.insertComercio(mgr, nomcom, ubicacion);
 		mgr.close();
 	}
 
@@ -93,14 +89,8 @@ public class Shopping {
 	public void updateComercio(@Named("comercio") String nomcom,
 			@Named("ubicacion") String ubicacion) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Comercio comercio = mgr.find(Comercio.class, nomcom);
-		if (comercio != null) {
-			comercio.setUbicacion(ubicacion);
-			mgr.persist(comercio);
-		}
-		trans.commit();
+		Comercios comer = new Comercios();
+		comer.updateComercio(mgr, nomcom, ubicacion);
 		mgr.close();
 	}
 
@@ -110,13 +100,8 @@ public class Shopping {
 	@ApiMethod(name = "deletecomercio", path = "delete_comercio")
 	public void deleteComercio(@Named("comercio") String nomcom) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Comercio comercio = mgr.find(Comercio.class, nomcom);
-		if (comercio != null) {
-			mgr.remove(comercio);
-		}
-		trans.commit();
+		Comercios comer = new Comercios();
+		comer.deleteComercio(mgr, nomcom);
 		mgr.close();
 	}
 
@@ -129,14 +114,8 @@ public class Shopping {
 			@Named("codProd") String codigo, @Named("nomProd") String nombre,
 			@Named("precioProd") float precio) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Producto producto = new Producto(comercio, codigo, nombre, precio);
-		Producto prodesta = mgr.find(Producto.class, producto.getClave());
-		if (prodesta == null) {
-			mgr.persist(producto);
-		}
-		trans.commit();
+		Productos prods = new Productos();
+		prods.insertProducto(mgr, comercio, codigo, nombre, precio);
 		mgr.close();
 	}
 
@@ -148,14 +127,8 @@ public class Shopping {
 	public void deleteProducto(@Named("comercio") String comercio,
 			@Named("codProd") String codigo) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Producto producto = new Producto(comercio, codigo);
-		producto = mgr.find(Producto.class, producto.getClave());
-		if (producto != null) {
-			mgr.remove(producto);
-		}
-		trans.commit();
+		Productos prods = new Productos();
+		prods.deleteProducto(mgr, comercio, codigo);
 		mgr.close();
 	}
 
@@ -168,16 +141,8 @@ public class Shopping {
 			@Named("codProd") String codigo, @Named("nomProd") String nombre,
 			@Named("precioProd") float precio) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Producto producto = new Producto(comercio, codigo);
-		producto = mgr.find(Producto.class, producto.getClave());
-		if (producto != null) {
-			producto.setNombre(nombre);
-			producto.setPrecio(precio);
-			mgr.persist(producto);
-		}
-		trans.commit();
+		Productos prods = new Productos();
+		prods.updateProducto(mgr, comercio, codigo, nombre, precio);
 		mgr.close();
 	}
 
@@ -188,10 +153,10 @@ public class Shopping {
 	public Paquete getPaquete(@Named("paquete") String nompaq) {
 		Paquete resp = null;
 		EntityManager mgr = getEntityManager();
-		Paquete paquete = mgr.find(Paquete.class, nompaq);
-		if (paquete != null) {
+		Paquetes paqs = new Paquetes();
+		Paquete paquete = paqs.getPaquete(mgr, nompaq);
+		if (paquete != null)
 			resp = paquete;
-		}
 		mgr.close();
 		return resp;
 	}
@@ -205,14 +170,8 @@ public class Shopping {
 			@Named("puntos") int puntos, @Named("precio") float precio,
 			@Named("elementoRf") String elemRf) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Paquete paquete = mgr.find(Paquete.class, nompaq);
-		if (paquete == null) {
-			paquete = new Paquete(nompaq, puntos, precio, elemRf);
-			mgr.persist(paquete);
-		}
-		trans.commit();
+		Paquetes paqs = new Paquetes();
+		paqs.insertPaquete(mgr, nompaq, puntos, precio, elemRf);
 		mgr.close();
 	}
 
@@ -222,13 +181,8 @@ public class Shopping {
 	@ApiMethod(name = "deletepaquete", path = "delete_paquete")
 	public void deletePaquete(@Named("paquete") String nompaq) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Paquete paquete = mgr.find(Paquete.class, nompaq);
-		if (paquete != null) {
-			mgr.remove(paquete);
-		}
-		trans.commit();
+		Paquetes paqs = new Paquetes();
+		paqs.deletePaquete(mgr, nompaq);
 		mgr.close();
 	}
 
@@ -240,16 +194,8 @@ public class Shopping {
 			@Named("puntos") int puntos, @Named("precio") float precio,
 			@Named("elementoRf") String elemRf) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Paquete paquete = mgr.find(Paquete.class, nompaq);
-		if (paquete != null) {
-			paquete.setPrecio(precio);
-			paquete.setPuntos(puntos);
-			paquete.setElementoRF(elemRf);
-			mgr.persist(paquete);
-		}
-		trans.commit();
+		Paquetes paqs = new Paquetes();
+		paqs.updatePaquete(mgr, nompaq, puntos, precio, elemRf);
 		mgr.close();
 	}
 
@@ -261,14 +207,8 @@ public class Shopping {
 			@Named("comercio") String comercio,
 			@Named("codProducto") String codigo) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Paquete paquete = mgr.find(Paquete.class, nompaq);
-		if (paquete != null) {
-			paquete.agregarProducto(comercio, codigo);
-			mgr.persist(paquete);
-		}
-		trans.commit();
+		Paquetes paqs = new Paquetes();
+		paqs.insertProductoPaquete(mgr, nompaq, comercio, codigo);
 		mgr.close();
 	}
 
@@ -280,14 +220,8 @@ public class Shopping {
 			@Named("comercio") String comercio,
 			@Named("codProducto") String codigo) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Paquete paquete = mgr.find(Paquete.class, nompaq);
-		if (paquete != null) {
-			paquete.eliminarProducto(comercio, codigo);
-			mgr.persist(paquete);
-		}
-		trans.commit();
+		Paquetes paqs = new Paquetes();
+		paqs.deleteProductoPaquete(mgr, nompaq, comercio, codigo);
 		mgr.close();
 	}
 
@@ -299,14 +233,8 @@ public class Shopping {
 			@Named("ubicacion") String ubicacion,
 			@Named("tipocontenido") String tipo) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Tag tag = mgr.find(Tag.class, id);
-		if (tag == null) {
-			tag = new Tag(id, ubicacion, tipo);
-			mgr.persist(tag);
-		}
-		trans.commit();
+		ElementosRF elems = new ElementosRF();
+		elems.insertTag(mgr, id, ubicacion, tipo);
 		mgr.close();
 	}
 
@@ -318,15 +246,8 @@ public class Shopping {
 			@Named("ubicacion") String ubicacion,
 			@Named("tipocontenido") String tipo) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Tag tag = mgr.find(Tag.class, id);
-		if (tag != null) {
-			tag.setUbicacion(ubicacion);
-			tag.setTipConten(tipo);
-			mgr.persist(tag);
-		}
-		trans.commit();
+		ElementosRF elems = new ElementosRF();
+		elems.updateTag(mgr, id, ubicacion, tipo);
 		mgr.close();
 	}
 
@@ -336,13 +257,8 @@ public class Shopping {
 	@ApiMethod(name = "deletetag", path = "delete_tag")
 	public void deleteTag(@Named("tagid") String id) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Tag tag = mgr.find(Tag.class, id);
-		if (tag != null) {
-			mgr.remove(tag);
-		}
-		trans.commit();
+		ElementosRF elems = new ElementosRF();
+		elems.deleteTag(mgr, id);
 		mgr.close();
 	}
 
@@ -355,14 +271,8 @@ public class Shopping {
 			@Named("major") int major, @Named("minor") int minor,
 			@Named("rssi") int rssi) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Beacon beacon = mgr.find(Beacon.class, id);
-		if (beacon == null) {
-			beacon = new Beacon(id, ubicacion, uuid, major, minor, rssi);
-			mgr.persist(beacon);
-		}
-		trans.commit();
+		ElementosRF elems = new ElementosRF();
+		elems.insertBeacon(mgr, id, ubicacion, uuid, major, minor, rssi);
 		mgr.close();
 	}
 
@@ -375,18 +285,8 @@ public class Shopping {
 			@Named("major") int major, @Named("minor") int minor,
 			@Named("rssi") int rssi) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Beacon beacon = mgr.find(Beacon.class, id);
-		if (beacon != null) {
-			beacon.setUbicacion(ubicacion);
-			beacon.setUuid(uuid);
-			beacon.setMajor(major);
-			beacon.setMinor(minor);
-			beacon.setRssi(rssi);
-			mgr.persist(beacon);
-		}
-		trans.commit();
+		ElementosRF elems = new ElementosRF();
+		elems.updateBeacon(mgr, id, ubicacion, uuid, major, minor, rssi);
 		mgr.close();
 	}
 
@@ -396,39 +296,8 @@ public class Shopping {
 	@ApiMethod(name = "deletebeacon", path = "delete_beacon")
 	public void deleteBeacon(@Named("beaconid") String id) {
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Beacon beacon = mgr.find(Beacon.class, id);
-		if (beacon != null) {
-			mgr.remove(beacon);
-		}
-		trans.commit();
-		mgr.close();
-	}
-
-	/*
-	 * Listar paquete
-	 */
-	@ApiMethod(name = "listarpaquete", path = "listar_paquete")
-	public void listarPaquete(@Named("paquete") String nompaq) {
-		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Paquete paquete = mgr.find(Paquete.class, nompaq);
-		if (paquete != null) {
-			System.out.println("Nombre de paquete  : " + nompaq);
-			System.out.println("Precio de paquete  : " + paquete.getPrecio());
-			System.out.println("Puntos de paquete  : " + paquete.getPuntos());
-			System.out.println("Cant. de productos : "
-					+ paquete.getCantProductos());
-			System.out.println("Prods en Lista     : "
-					+ paquete.getProductos().size());
-			for (int i = 0; i < paquete.getCantProductos(); i++) {
-				System.out.println("Producto " + i + " : "
-						+ paquete.getProductos().get(i));
-			}
-		}
-		trans.commit();
+		ElementosRF elems = new ElementosRF();
+		elems.deleteBeacon(mgr, id);
 		mgr.close();
 	}
 
@@ -440,15 +309,10 @@ public class Shopping {
 	public Paquete getPaqueteRF(@Named("elementoRF") String elemRf) {
 		Paquete paqresp = null;
 		EntityManager mgr = getEntityManager();
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
-		Query querypaq = mgr.createQuery(
-				"SELECT p FROM Paquete p WHERE p.elementoRF = :elemrf",
-				Paquete.class);
-		querypaq.setParameter("elemrf", elemRf);
-		Paquete paquete = (Paquete) querypaq.getSingleResult();
-		paqresp = paquete;
-		trans.commit();
+		Paquetes paqs = new Paquetes();
+		Paquete paquete = paqs.getPaqueteRF(mgr, elemRf);
+		if (paquete != null)
+			paqresp = paquete;
 		mgr.close();
 		return paqresp;
 	}
@@ -460,20 +324,50 @@ public class Shopping {
 	public LinkedList<Producto> getProductosPaquete(
 			@Named("paquete") String nompaq) {
 		LinkedList<Producto> prodlist = new LinkedList<Producto>();
-		Paquete paquete = this.getPaquete(nompaq);
-		if (paquete != null) {
-			EntityManager mgr = getEntityManager();
-			LinkedList<String> prods = paquete.getProductos();
-			Iterator<String> iprods = prods.iterator();
-			while (iprods.hasNext()) {
-				String claveprod = iprods.next();
-				Producto prod = mgr.find(Producto.class, claveprod);
-				if (prod != null)
-					prodlist.add(prod);
-			}
-			mgr.close();
-		}
+		EntityManager mgr = getEntityManager();
+		Paquetes paqs = new Paquetes();
+		prodlist = paqs.getProductosPaquete(mgr, nompaq);
+		mgr.close();
 		return prodlist;
+	}
+
+	/*
+	 * Realizar el registro de un nuevo cliente
+	 */
+	@ApiMethod(name = "RegistroUsuario", path = "registro_usuario")
+	public Mensaje registroUsuario(@Named("usuario") String usuario,
+			@Named("email") String email, @Named("nombre") String nombre) {
+		EntityManager mgr = getEntityManager();
+		LoginRegistro logreg = new LoginRegistro();
+		Mensaje resp = logreg.registroUsuario(mgr, usuario, email, nombre);
+		mgr.close();
+		return resp;
+	}
+
+	/*
+	 * Realizar el login del usuario
+	 */
+	@ApiMethod(name = "LoginUsuario", path = "login_usuario")
+	public Mensaje loginUsuario(@Named("usuario") String usuario,
+			@Named("password") String clave) {
+		EntityManager mgr = getEntityManager();
+		LoginRegistro logreg = new LoginRegistro();
+		Mensaje resp = logreg.loginUsuario(mgr, usuario, clave);
+		mgr.close();
+		return resp;
+	}
+
+	/*
+	 * Realizar el logoff del usuario
+	 */
+	@ApiMethod(name = "LogoffUsuario", path = "logoff_usuario")
+	public Mensaje logoffUsuario(@Named("usuario") String usuario,
+			@Named("password") String clave) {
+		EntityManager mgr = getEntityManager();
+		LoginRegistro logreg = new LoginRegistro();
+		Mensaje resp = logreg.loginUsuario(mgr, usuario, clave);
+		mgr.close();
+		return resp;
 	}
 
 	/*

@@ -1,4 +1,4 @@
-package com.fortmin.proshopping;
+package com.fortmin.proshopping.logica;
 
 import java.io.IOException;
 import java.util.List;

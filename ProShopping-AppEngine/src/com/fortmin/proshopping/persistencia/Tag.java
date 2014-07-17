@@ -1,4 +1,4 @@
-package com.fortmin.proshopping;
+package com.fortmin.proshopping.persistencia;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;

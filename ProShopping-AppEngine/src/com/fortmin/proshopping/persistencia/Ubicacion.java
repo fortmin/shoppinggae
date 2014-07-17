@@ -1,4 +1,4 @@
-package com.fortmin.proshopping;
+package com.fortmin.proshopping.persistencia;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
