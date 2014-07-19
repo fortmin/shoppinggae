@@ -3,7 +3,7 @@ package com.fortmin.proshopping.logica;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import com.fortmin.proshopping.persistencia.Ubicacion;
+import com.fortmin.proshopping.entidades.Ubicacion;
 
 public class Ubicaciones {
 
@@ -66,5 +66,5 @@ public class Ubicaciones {
 		}
 		return ubic;
 	}
-
+	
 }

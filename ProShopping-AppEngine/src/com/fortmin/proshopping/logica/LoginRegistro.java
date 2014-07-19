@@ -2,7 +2,8 @@ package com.fortmin.proshopping.logica;
 
 import javax.persistence.EntityManager;
 
-import com.fortmin.proshopping.persistencia.Cliente;
+import com.fortmin.proshopping.entidades.Cliente;
+import com.fortmin.proshopping.entidades.Mensaje;
 
 public class LoginRegistro {
 	
@@ -66,6 +67,19 @@ public class LoginRegistro {
 		}
 		else
 			result = new Mensaje("LogoffUsuario",usuario+"::USUARIO_INEXISTENTE");
+		return result;
+	}
+	
+	/*
+	 * Es un usuario registrado?
+	 */
+	public Mensaje usuarioRegistrado(EntityManager mgr, String usuario) {
+		Mensaje result = null;
+		Cliente cliente = mgr.find(Cliente.class, usuario);
+		if (cliente != null)
+			result = new Mensaje("UsuarioRegistrado","OK");
+		else 
+			result = new Mensaje("UsuarioRegistrado",usuario+"::USUARIO_INEXISTENTE");
 		return result;
 	}
 

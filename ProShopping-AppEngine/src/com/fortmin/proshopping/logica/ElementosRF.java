@@ -3,8 +3,8 @@ package com.fortmin.proshopping.logica;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import com.fortmin.proshopping.persistencia.Beacon;
-import com.fortmin.proshopping.persistencia.Tag;
+import com.fortmin.proshopping.entidades.Beacon;
+import com.fortmin.proshopping.entidades.Tag;
 
 public class ElementosRF {
 

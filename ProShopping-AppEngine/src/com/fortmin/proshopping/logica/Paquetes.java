@@ -5,10 +5,11 @@ import java.util.LinkedList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import com.fortmin.proshopping.persistencia.Paquete;
-import com.fortmin.proshopping.persistencia.Producto;
+import com.fortmin.proshopping.entidades.Paquete;
+import com.fortmin.proshopping.entidades.Producto;
 
 public class Paquetes {
 
@@ -17,11 +18,16 @@ public class Paquetes {
 	 * el paquete promocional asociado al mismo
 	 */
 	public Paquete getPaqueteRF(EntityManager mgr, String elemRf) {
+		Paquete paquete = null;
 		Query querypaq = mgr.createQuery(
 				"SELECT p FROM Paquete p WHERE p.elementoRF = :elemrf",
 				Paquete.class);
 		querypaq.setParameter("elemrf", elemRf);
-		Paquete paquete = (Paquete) querypaq.getSingleResult();
+		try {
+			paquete = (Paquete) querypaq.getSingleResult();
+		} catch (NoResultException e) {
+			paquete = null;
+		}
 		return paquete;
 	}
 

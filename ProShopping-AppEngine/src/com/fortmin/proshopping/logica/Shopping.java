@@ -5,14 +5,15 @@ import java.util.LinkedList;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
-import com.fortmin.proshopping.persistencia.Paquete;
-import com.fortmin.proshopping.persistencia.Producto;
-import com.fortmin.proshopping.persistencia.Ubicacion;
+import com.fortmin.proshopping.entidades.Mensaje;
+import com.fortmin.proshopping.entidades.Paquete;
+import com.fortmin.proshopping.entidades.Producto;
+import com.fortmin.proshopping.entidades.Ubicacion;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 
-@Api(name = "shopping", namespace = @ApiNamespace(ownerDomain = "fortmin.com", ownerName = "fortmin.com", packagePath = "proshopping"))
+@Api(name = "shopping", namespace = @ApiNamespace(ownerDomain = "fortmin.com", ownerName = "fortmin.com", packagePath = "proshopping.logica"))
 public class Shopping {
 
 	/*
@@ -369,12 +370,61 @@ public class Shopping {
 		mgr.close();
 		return resp;
 	}
+	
+	/*
+	 * Ingreso al Shopping a través de un estacionamiento
+	 */
+	@ApiMethod(name = "IngresoEstacionamiento", path = "ingreso_estacionamiento")
+	public Mensaje ingresoEstacionamiento(@Named("elementoRF") String elemRf, @Named("usuario") String usuario) {
+		EntityManager mgr = getEntityManager();
+		Accesos accs = new Accesos();
+		Mensaje resp = accs.ingresoEstacionamiento(mgr, elemRf, usuario);
+		mgr.close();
+		return resp;
+	}
+	
+	/*
+	 * Egreso del Shopping a través de un estacionamiento
+	 */
+	@ApiMethod(name = "EgresoEstacionamiento", path = "egreso_estacionamiento")
+	public Mensaje egresoEstacionamiento(@Named("elementoRF") String elemRf, @Named("usuario") String usuario) {
+		EntityManager mgr = getEntityManager();
+		Accesos accs = new Accesos();
+		Mensaje resp = accs.egresoEstacionamiento(mgr, elemRf, usuario);
+		mgr.close();
+		return resp;
+	}
+	
+	/*
+	 * Insertar un acceso de tipo estacionamiento con sus datos
+	 */
+	@ApiMethod(name = "InsertAccesoEstacionamiento", path = "insert_acceso_estacionamiento")
+	public void insertAccesoEstacionamiento(@Named("nombre") String nombre,
+			@Named("ubicacion") String ubicacion,
+			@Named("elementoRf") String elementoRf) {
+		EntityManager mgr = getEntityManager();
+		Accesos accs = new Accesos();
+		accs.insertAccesoEstacionamiento(mgr, nombre, ubicacion, elementoRf, true);
+		mgr.close();
+	}
 
+	/*
+	 * Eliminar un acceso de tipo estacionamiento con sus datos
+	 */
+	@ApiMethod(name = "deleteAccesoEstacionamiento", path = "delete_acceso_estacionamiento")
+	public void deleteAccesoEstacionamiento(@Named("nombre") String nombre) {
+		EntityManager mgr = getEntityManager();
+		Accesos accs = new Accesos();
+		accs.deleteAccesoEstacionamiento(mgr, nombre);
+		mgr.close();
+	}
+	
 	/*
 	 * Obtener una referencia al EntityManager
 	 */
 	private static EntityManager getEntityManager() {
 		return EMF.get().createEntityManager();
 	}
+
 
 }

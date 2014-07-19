@@ -1,6 +1,6 @@
-package com.fortmin.proshopping.persistencia;
+package com.fortmin.proshopping.entidades;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

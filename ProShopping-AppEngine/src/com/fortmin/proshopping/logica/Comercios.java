@@ -3,7 +3,7 @@ package com.fortmin.proshopping.logica;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import com.fortmin.proshopping.persistencia.Comercio;
+import com.fortmin.proshopping.entidades.Comercio;
 
 public class Comercios {
 	
