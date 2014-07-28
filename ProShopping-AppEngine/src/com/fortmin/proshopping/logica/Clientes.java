@@ -28,9 +28,53 @@ public class Clientes {
 		}
 		else
 			result = new Mensaje("RegistroUsuario",usuario+"::USUARIO_EXISTENTE");
-		
 		return result;
 	}
 	
+	/*
+	 * Obtener el puntaje actual del cliente
+	 */
+	public Mensaje getPuntajeCliente(EntityManager mgr, String usuario) {
+		Mensaje result = null;
+		Cliente cliente = mgr.find(Cliente.class, usuario);
+		if (cliente != null) {
+			result = new Mensaje("GetPuntajeCliente", "OK", cliente.getPuntaje());
+		}
+		else
+			result = new Mensaje("GetPuntajeCliente",usuario+"::USUARIO_EXISTENTE");
+		return result;
+	}
+
+	/*
+	 * Obtener el estado de visibilidad del cliente
+	 */
+	public Mensaje getVisibilidadCliente(EntityManager mgr, String usuario) {
+		Mensaje result = null;
+		Cliente cliente = mgr.find(Cliente.class, usuario);
+		if (cliente != null) {
+			if (cliente.isVisible())
+				result = new Mensaje("GetVisibilidadCliente", "VISIBLE");
+			else
+				result = new Mensaje("GetVisibilidadCliente", "INVISIBLE");
+		}
+		else
+			result = new Mensaje("GetPuntajeCliente",usuario+"::USUARIO_EXISTENTE");
+		return result;
+	}
+	
+	/*
+	 * Establecer el estado de visibilidad del cliente
+	 */
+	public Mensaje establecerVisibilidadCliente(EntityManager mgr, String usuario, boolean visible) {
+		Mensaje result = null;
+		Cliente cliente = mgr.find(Cliente.class, usuario);
+		if (cliente != null) {
+			cliente.setVisible(visible);
+			mgr.persist(cliente);
+		}
+		else
+			result = new Mensaje("GetPuntajeCliente",usuario+"::USUARIO_EXISTENTE");
+		return result;
+	}
 
 }

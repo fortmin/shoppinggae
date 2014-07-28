@@ -12,10 +12,17 @@ public class Mensaje {
 	private long clave;
 	private String operacion;
 	private String mensaje;
+	private double valor;
 
 	public Mensaje(String operacion, String mensaje) {
 		this.operacion = operacion;
 		this.mensaje = mensaje;
+	}
+
+	public Mensaje(String operacion, String mensaje, double valor) {
+		this.operacion = operacion;
+		this.mensaje = mensaje;
+		this.valor = valor;
 	}
 
 	public String getOperacion() {
@@ -32,6 +39,14 @@ public class Mensaje {
 
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
+	}
+
+	public double getValor() {
+		return valor;
+	}
+
+	public void setValor(double valor) {
+		this.valor = valor;
 	}
 
 }

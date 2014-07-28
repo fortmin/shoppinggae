@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import com.fortmin.proshopping.entidades.Producto;
+import com.fortmin.proshopping.entidades.ProductoVO;
 
 public class Productos {
 
