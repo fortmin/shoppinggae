@@ -4,22 +4,11 @@ import com.google.appengine.api.datastore.Blob;
 
 public class Imagen {
 
-	private String tipoImg;
 	private Blob imagen;
 	
-	public Imagen(String tipoImg, Blob imagen) {
-		this.tipoImg = tipoImg;
-		this.imagen = imagen;
+	public Imagen() {
 	}
-
-	public String getTipoImg() {
-		return tipoImg;
-	}
-
-	public void setTipoImg(String tipoImg) {
-		this.tipoImg = tipoImg;
-	}
-
+	
 	public Blob getImagen() {
 		return imagen;
 	}

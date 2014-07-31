@@ -71,12 +71,12 @@ public class Productos {
 	/*
 	 * Cargar la imagen de un producto
 	 */
-	public void cargarImagen(EntityManager mgr, String comercio, String producto, Imagen img) {
+	public void cargarImagen(EntityManager mgr, String comercio, String producto, Imagen imagen) {
 		Producto prod = new Producto(comercio, producto);
 		prod = mgr.find(Producto.class, prod.getClave());
 		if (prod != null) {
-			prod.setImagen(img.getImagen());
-			prod.setTipoImagen(img.getTipoImg());
+			prod.setImagen(imagen.getImagen());
+			prod.setTipoImagen("image/png");
 			mgr.persist(prod);
 		}
 	}
@@ -89,7 +89,8 @@ public class Productos {
 		Producto prod = new Producto(comercio, producto);
 		prod = mgr.find(Producto.class, prod.getClave());
 		if (prod != null) {
-			imagen = new Imagen(prod.getTipoImagen(), prod.getImagen());
+			imagen = new Imagen();
+			imagen.setImagen(prod.getImagen());
 		}
 		return imagen;
 	}
