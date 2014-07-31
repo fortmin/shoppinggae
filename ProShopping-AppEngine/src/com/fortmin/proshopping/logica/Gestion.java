@@ -3,9 +3,12 @@ package com.fortmin.proshopping.logica;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
+import com.fortmin.proshopping.entidades.Imagen;
+import com.fortmin.proshopping.entidades.Producto;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Nullable;
 
 @Api(name = "gestion", namespace = @ApiNamespace(ownerDomain = "fortmin.com", ownerName = "fortmin.com", packagePath = "proshopping.logica"))
 public class Gestion {
@@ -94,10 +97,12 @@ public class Gestion {
 	@ApiMethod(name = "insertproducto", path = "insert_producto")
 	public void insertProducto(@Named("comercio") String comercio,
 			@Named("codProd") String codigo, @Named("nomProd") String nombre,
-			@Named("precioProd") float precio) {
+			@Named("precioProd") float precio,
+			@Named("detalles") String detalles) {
 		EntityManager mgr = getEntityManager();
 		Productos prods = new Productos();
-		prods.insertProducto(mgr, comercio, codigo, nombre, precio);
+		byte[] imagen = null;
+		prods.insertProducto(mgr, comercio, codigo, nombre, precio, detalles);
 		mgr.close();
 	}
 
@@ -121,13 +126,25 @@ public class Gestion {
 	@ApiMethod(name = "updateproducto", path = "update_producto")
 	public void updateProducto(@Named("comercio") String comercio,
 			@Named("codProd") String codigo, @Named("nomProd") String nombre,
-			@Named("precioProd") float precio) {
+			@Named("precioProd") float precio,
+			@Named("detalles") String detalles) {
 		EntityManager mgr = getEntityManager();
 		Productos prods = new Productos();
-		prods.updateProducto(mgr, comercio, codigo, nombre, precio);
+		prods.updateProducto(mgr, comercio, codigo, nombre, precio, detalles);
 		mgr.close();
 	}
-
+	
+	/* 
+	 * Cargar una imagen en un producto identificado por el comercio y el codigo
+	 */
+	@ApiMethod(name = "cargarimagen", path = "cargar_imagen")
+	public void cargarImagen(@Named("comercio") String comercio, @Named("codProd") String producto, Imagen img) {
+		EntityManager mgr = getEntityManager();
+		Productos prods = new Productos();
+		prods.cargarImagen(mgr, comercio, producto, img);
+		mgr.close();
+	}
+	
 	/*
 	 * Crear un paquete nuevo con una lista de productos vacia y luego los
 	 * productos deben agregarse con insertProductoPaquete
@@ -277,7 +294,8 @@ public class Gestion {
 			@Named("elementoRf") String elementoRf) {
 		EntityManager mgr = getEntityManager();
 		Accesos accs = new Accesos();
-		accs.insertAccesoEstacionamiento(mgr, nombre, ubicacion, elementoRf, true);
+		accs.insertAccesoEstacionamiento(mgr, nombre, ubicacion, elementoRf,
+				true);
 		mgr.close();
 	}
 
@@ -291,7 +309,18 @@ public class Gestion {
 		accs.deleteAccesoEstacionamiento(mgr, nombre);
 		mgr.close();
 	}
-	
+
+	/*
+	 * Establecer el calibrado de un Beacon
+	 */
+	@ApiMethod(name = "CalibrarBeacon", path = "calibrar_beacon")
+	public void calibrarBeacon(@Named("elementoRF") String elemRf,
+			@Named("calibre") int calibre) {
+		EntityManager mgr = getEntityManager();
+		ElementosRF elems = new ElementosRF();
+		elems.calibrarBeacon(mgr, elemRf, calibre);
+	}
+
 	/*
 	 * Obtener una referencia al EntityManager
 	 */
@@ -299,5 +328,4 @@ public class Gestion {
 		return EMF.get().createEntityManager();
 	}
 
-	
 }

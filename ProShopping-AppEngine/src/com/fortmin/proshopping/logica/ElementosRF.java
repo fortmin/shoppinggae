@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import com.fortmin.proshopping.entidades.Beacon;
+import com.fortmin.proshopping.entidades.Mensaje;
 import com.fortmin.proshopping.entidades.Tag;
 
 public class ElementosRF {
@@ -98,6 +99,40 @@ public class ElementosRF {
 			mgr.remove(beacon);
 		}
 		trans.commit();
+	}
+	
+	/*
+	 * Calibrar un Beacon
+	 */
+	public void calibrarBeacon(EntityManager mgr, String id, int calibre) {
+		EntityTransaction trans = mgr.getTransaction();
+		trans.begin();
+		Beacon beacon = mgr.find(Beacon.class, id);
+		if (beacon != null) {
+			beacon.setCalibre(calibre);
+			beacon.setCalibrado(true);
+			mgr.persist(beacon);
+		}
+		trans.commit();
+	}
+
+	/*
+	 * Obtener calibrado, retorna -9999 si no esta calibrado
+	 */
+	public Mensaje getCalibradoBeacon(EntityManager mgr, String id) {
+		Mensaje resp = null;
+		Beacon beacon = mgr.find(Beacon.class, id);
+		if (beacon != null) {
+			if (beacon.isCalibrado()) {
+				int calibre = beacon.getCalibre();
+				resp = new Mensaje("GetCalibradoBeacon","OK",calibre);
+			}
+			else
+				resp = new Mensaje("GetCalibradoBeacon",id+"::BEACON_NO_CALIBRADO");
+		}
+		else
+			resp = new Mensaje("GetCalibradoBeacon",id+"::BEACON_INEXISTENTE");
+		return resp;
 	}
 
 }

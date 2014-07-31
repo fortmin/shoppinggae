@@ -14,6 +14,8 @@ public class Beacon extends ElementoRF {
 	private int major;
 	private int minor;
 	private int rssi;
+	private int calibre;
+	private boolean calibrado;
 
 	public Beacon(String id) {
 		super(id);
@@ -28,6 +30,9 @@ public class Beacon extends ElementoRF {
 		this.uuid = uuid;
 		this.major = major;
 		this.minor = minor;
+		this.rssi = 0;
+		this.calibre = 0;
+		this.calibrado = false;
 	}
 
 	public Beacon(String id, String ubicacion, String uuid, int major, int minor, int rssi) {
@@ -35,7 +40,9 @@ public class Beacon extends ElementoRF {
 		this.uuid = uuid;
 		this.major = major;
 		this.minor = minor;
-		this.setRssi(rssi);
+		this.rssi = rssi;
+		this.calibre = 0;
+		this.calibrado = false;
 	}
 
 	@Override
@@ -73,6 +80,22 @@ public class Beacon extends ElementoRF {
 
 	public void setRssi(int rssi) {
 		this.rssi = rssi;
+	}
+
+	public int getCalibre() {
+		return calibre;
+	}
+
+	public void setCalibre(int calibre) {
+		this.calibre = calibre;
+	}
+
+	public boolean isCalibrado() {
+		return calibrado;
+	}
+
+	public void setCalibrado(boolean calibrado) {
+		this.calibrado = calibrado;
 	}
 	
 }

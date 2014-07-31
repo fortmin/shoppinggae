@@ -5,11 +5,12 @@ import java.util.LinkedList;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
+import com.fortmin.proshopping.entidades.Imagen;
 import com.fortmin.proshopping.entidades.Mensaje;
 import com.fortmin.proshopping.entidades.Paquete;
 import com.fortmin.proshopping.entidades.PaqueteVO;
 import com.fortmin.proshopping.entidades.Producto;
-import com.fortmin.proshopping.entidades.ProductoVO;
+import com.fortmin.proshopping.entidades.ProductoExtVO;
 import com.fortmin.proshopping.entidades.Ubicacion;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -139,11 +140,48 @@ public class Shopping {
 		return resp;
 	}
 	
+	/*
+	 * Obtener el paquete completo con todos sus productos
+	 */
 	@ApiMethod(name = "GetPaqueteCompleto", path = "get_paquete_completo") 
 	public PaqueteVO getPaqueteCompleto(@Named("elementoRF") String elemRf) {
 		EntityManager mgr = getEntityManager();
 		Paquetes paquetes = new Paquetes();
 		PaqueteVO resp = paquetes.getPaqueteCompleto(mgr, elemRf);
+		return resp;
+	}
+
+	/* 
+	 * Obtener todos los datos del producto incluyendo su imagen
+	 */
+	@ApiMethod(name = "GetProductoCompleto", path = "get_producto_completo") 
+	public ProductoExtVO getProductoCompleto(@Named("comercio") String comercio, @Named("codigo") String codigo) {
+		EntityManager mgr = getEntityManager();
+		Productos prods = new Productos();
+		ProductoExtVO resp = prods.getProductoCompleto(mgr, comercio, codigo);
+		return resp;
+	}
+
+	/* 
+	 * Obtener una imagen con un producto identificado por el comercio y el codigo
+	 */
+	@ApiMethod(name = "GetImagen", path = "get_imagen")
+	public Imagen getImagen(@Named("comercio") String comercio, @Named("codProd") String producto) {
+		EntityManager mgr = getEntityManager();
+		Productos prods = new Productos();
+		Imagen imagen = prods.getImagen(mgr, comercio, producto);
+		mgr.close();
+		return imagen;
+	}
+	
+	/*
+	 * Obtener calibrado, retorna -9999 si no esta calibrado
+	 */
+	@ApiMethod(name = "GetCalibradoBeacon", path = "get_calibrado_beacon")	
+	public Mensaje getCalibradoBeacon(@Named("elementoRF") String elemRf) {
+		EntityManager mgr = getEntityManager();
+		ElementosRF elems = new ElementosRF();
+		Mensaje resp = elems.getCalibradoBeacon(mgr, elemRf);
 		return resp;
 	}
 

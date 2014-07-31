@@ -7,7 +7,7 @@ public class ProductoVO {
 	private float precio;
 	
 	public ProductoVO(String comercio, String nombre, float precio) {
-		this.setComercio(comercio);
+		this.comercio = comercio;
 		this.nombre = nombre;
 		this.precio = precio;
 	}
