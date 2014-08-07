@@ -3,6 +3,7 @@ package com.fortmin.proshopping.logica;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -23,15 +24,21 @@ public class Accesos {
 		if (acceso != null) {
 			if (acceso.getTipo().equals("ESTACIONAMIENTO")) {
 				Clientes clis = new Clientes();
+				EntityTransaction txn = mgr.getTransaction();
+				txn.begin();
 				Cliente cliente = clis.getCliente(mgr, usuario);
 				if (cliente != null) {
 					cliente.setUltEntrada(new Date());
 					cliente.setPresente(true);
 					mgr.persist(cliente);
+					txn.commit();
+					clis.actualizarPosicion(mgr, usuario, elemRf, "NFCTAG");
 					result = new Mensaje("IngresoEstacionamiento", "OK");
-				} else
+				} else {
+					txn.rollback();
 					result = new Mensaje("IngresoEstacionamiento", usuario
 							+ "::CLIENTE_INEXISTENTE");
+				}
 			} else
 				result = new Mensaje("IngresoEstacionamiento", elemRf + "::"
 						+ acceso.getNombre() + "::NO_ES_ACCESO_ESTACIONAMIENTO");
@@ -51,11 +58,15 @@ public class Accesos {
 		if (acceso != null) {
 			if (acceso.getTipo().equals("ESTACIONAMIENTO")) {
 				Clientes clis = new Clientes();
+				EntityTransaction txn = mgr.getTransaction();
+				txn.begin();
 				Cliente cliente = clis.getCliente(mgr, usuario);
 				if (cliente != null) {
 					cliente.setUltSalida(new Date());
 					cliente.setPresente(false);
 					mgr.persist(cliente);
+					txn.commit();
+					clis.actualizarPosicion(mgr, usuario, elemRf, "NFCTAG");
 					Utils utils = new Utils();
 					Parametros params = new Parametros();
 					if (utils.diffFechasSegundos(cliente.getUltEntrada(),cliente.getUltSalida()) < 
@@ -64,9 +75,11 @@ public class Accesos {
 					else
 						result = new Mensaje("EgresoEstacionamiento", usuario
 								+ "::PLAZO_VENCIDO");
-				} else
+				} else {
+					txn.rollback();
 					result = new Mensaje("EgresoEstacionamiento", usuario
 							+ "::CLIENTE_INEXISTENTE");
+				}
 			} else
 				result = new Mensaje("EgresoEstacionamiento", elemRf + "::"
 						+ acceso.getNombre() + "::NO_ES_ACCESO_ESTACIONAMIENTO");

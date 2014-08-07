@@ -11,6 +11,12 @@ public class ProductoVO {
 		this.nombre = nombre;
 		this.precio = precio;
 	}
+	
+	public ProductoVO(Producto prod) {
+		this.comercio = prod.getComercio();
+		this.nombre = prod.getNombre();
+		this.precio = prod.getPrecio();
+	}
 
 	public String getComercio() {
 		return comercio;

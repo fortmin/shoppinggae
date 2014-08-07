@@ -21,7 +21,7 @@ public class LoginRegistro {
 			mgr.persist(cliente);
 			result = new Mensaje("RegistroUsuario","OK");
 		}
-		else
+		else 
 			result = new Mensaje("RegistroUsuario",usuario+"::USUARIO_EXISTENTE");
 		return result;
 	}

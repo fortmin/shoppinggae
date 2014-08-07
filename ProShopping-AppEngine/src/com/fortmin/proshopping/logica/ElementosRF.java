@@ -4,24 +4,41 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import com.fortmin.proshopping.entidades.Beacon;
+import com.fortmin.proshopping.entidades.ElementoRF;
 import com.fortmin.proshopping.entidades.Mensaje;
 import com.fortmin.proshopping.entidades.Tag;
 
 public class ElementosRF {
 
 	/*
+	 * Devuelve el nombre de la ubicacion asociada a un elementoRf
+	 * El tipo debe ser NFCTAG o BEACON
+	 */
+	public String obtenerUbicacionElementoRf(EntityManager mgr, String id, String tipo) {
+		String ubicacion = null;
+		if (tipo.equals("NFCTAG")) {
+			Tag tag = mgr.find(Tag.class, id);
+			if (tag != null)
+				ubicacion = tag.getUbicacion();
+		}
+		else if (tipo.equals("BEACON")) {
+			Beacon beacon = mgr.find(Beacon.class, id);
+			if (beacon != null)
+				ubicacion = beacon.getUbicacion();
+		}
+		return ubicacion;
+	}
+	
+	/*
 	 * Insertar un Tag NFC junto con sus datos
 	 */
 	public void insertTag(EntityManager mgr, String id, String ubicacion,
 			String tipo) {
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
 		Tag tag = mgr.find(Tag.class, id);
 		if (tag == null) {
 			tag = new Tag(id, ubicacion, tipo);
 			mgr.persist(tag);
 		}
-		trans.commit();
 	}
 
 	/*
@@ -44,13 +61,10 @@ public class ElementosRF {
 	 * Elimina un Tag NFC existente
 	 */
 	public void deleteTag(EntityManager mgr, String id) {
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
 		Tag tag = mgr.find(Tag.class, id);
 		if (tag != null) {
 			mgr.remove(tag);
 		}
-		trans.commit();
 	}
 
 	/*
@@ -58,14 +72,11 @@ public class ElementosRF {
 	 */
 	public void insertBeacon(EntityManager mgr, String id, String ubicacion,
 			String uuid, int major, int minor, int rssi) {
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
 		Beacon beacon = mgr.find(Beacon.class, id);
 		if (beacon == null) {
 			beacon = new Beacon(id, ubicacion, uuid, major, minor, rssi);
 			mgr.persist(beacon);
 		}
-		trans.commit();
 	}
 
 	/*
@@ -92,13 +103,10 @@ public class ElementosRF {
 	 */
 
 	public void deleteBeacon(EntityManager mgr, String id) {
-		EntityTransaction trans = mgr.getTransaction();
-		trans.begin();
 		Beacon beacon = mgr.find(Beacon.class, id);
 		if (beacon != null) {
 			mgr.remove(beacon);
 		}
-		trans.commit();
 	}
 	
 	/*

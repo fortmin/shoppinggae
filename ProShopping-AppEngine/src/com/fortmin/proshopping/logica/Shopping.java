@@ -9,6 +9,7 @@ import com.fortmin.proshopping.entidades.Imagen;
 import com.fortmin.proshopping.entidades.Mensaje;
 import com.fortmin.proshopping.entidades.Paquete;
 import com.fortmin.proshopping.entidades.PaqueteVO;
+import com.fortmin.proshopping.entidades.CarritoVO;
 import com.fortmin.proshopping.entidades.Producto;
 import com.fortmin.proshopping.entidades.ProductoExtVO;
 import com.fortmin.proshopping.entidades.Ubicacion;
@@ -18,7 +19,6 @@ import com.google.api.server.spi.config.ApiNamespace;
 
 @Api(name = "shopping", namespace = @ApiNamespace(ownerDomain = "fortmin.com", ownerName = "fortmin.com", packagePath = "proshopping.logica"))
 public class Shopping {
-
 
 	/*
 	 * Este metodo permite obtener los datos de una ubicacion del conjunto de
@@ -32,7 +32,6 @@ public class Shopping {
 		mgr.close();
 		return resp;
 	}
-
 
 	/*
 	 * Obtener los datos del paquete en base a su nombre
@@ -48,7 +47,6 @@ public class Shopping {
 		mgr.close();
 		return resp;
 	}
-
 
 	/*
 	 * Dada la identificacion de un elemento RF (Tag, Beacon, ...) se devuelve
@@ -84,31 +82,34 @@ public class Shopping {
 	 * Ingreso al Shopping a través de un estacionamiento
 	 */
 	@ApiMethod(name = "IngresoEstacionamiento", path = "ingreso_estacionamiento")
-	public Mensaje ingresoEstacionamiento(@Named("elementoRF") String elemRf, @Named("usuario") String usuario) {
+	public Mensaje ingresoEstacionamiento(@Named("elementoRF") String elemRf,
+			@Named("usuario") String usuario) {
 		EntityManager mgr = getEntityManager();
 		Accesos accs = new Accesos();
 		Mensaje resp = accs.ingresoEstacionamiento(mgr, elemRf, usuario);
 		mgr.close();
 		return resp;
 	}
-	
+
 	/*
 	 * Egreso del Shopping a través de un estacionamiento
 	 */
 	@ApiMethod(name = "EgresoEstacionamiento", path = "egreso_estacionamiento")
-	public Mensaje egresoEstacionamiento(@Named("elementoRF") String elemRf, @Named("usuario") String usuario) {
+	public Mensaje egresoEstacionamiento(@Named("elementoRF") String elemRf,
+			@Named("usuario") String usuario) {
 		EntityManager mgr = getEntityManager();
 		Accesos accs = new Accesos();
 		Mensaje resp = accs.egresoEstacionamiento(mgr, elemRf, usuario);
 		mgr.close();
 		return resp;
 	}
-	
+
 	/*
 	 * Establecer la visibilidad del cliente para con los amigos
 	 */
 	@ApiMethod(name = "EstablecerVisibilidad", path = "establecer_visibilidad")
-	public Mensaje establecerVisibilidad(@Named("usuario") String usuario, @Named("visible") boolean visible) {
+	public Mensaje establecerVisibilidad(@Named("usuario") String usuario,
+			@Named("visible") boolean visible) {
 		EntityManager mgr = getEntityManager();
 		Clientes clis = new Clientes();
 		Mensaje resp = clis.establecerVisibilidadCliente(mgr, usuario, visible);
@@ -139,11 +140,11 @@ public class Shopping {
 		mgr.close();
 		return resp;
 	}
-	
+
 	/*
 	 * Obtener el paquete completo con todos sus productos
 	 */
-	@ApiMethod(name = "GetPaqueteCompleto", path = "get_paquete_completo") 
+	@ApiMethod(name = "GetPaqueteCompleto", path = "get_paquete_completo")
 	public PaqueteVO getPaqueteCompleto(@Named("elementoRF") String elemRf) {
 		EntityManager mgr = getEntityManager();
 		Paquetes paquetes = new Paquetes();
@@ -151,37 +152,85 @@ public class Shopping {
 		return resp;
 	}
 
-	/* 
+	/*
 	 * Obtener todos los datos del producto incluyendo su imagen
 	 */
-	@ApiMethod(name = "GetProductoCompleto", path = "get_producto_completo") 
-	public ProductoExtVO getProductoCompleto(@Named("comercio") String comercio, @Named("codigo") String codigo) {
+	@ApiMethod(name = "GetProductoCompleto", path = "get_producto_completo")
+	public ProductoExtVO getProductoCompleto(
+			@Named("comercio") String comercio, @Named("codigo") String codigo) {
 		EntityManager mgr = getEntityManager();
 		Productos prods = new Productos();
 		ProductoExtVO resp = prods.getProductoCompleto(mgr, comercio, codigo);
 		return resp;
 	}
 
-	/* 
-	 * Obtener una imagen con un producto identificado por el comercio y el codigo
+	/*
+	 * Obtener una imagen con un producto identificado por el comercio y el
+	 * codigo
 	 */
 	@ApiMethod(name = "GetImagen", path = "get_imagen")
-	public Imagen getImagen(@Named("comercio") String comercio, @Named("codProd") String producto) {
+	public Imagen getImagen(@Named("comercio") String comercio,
+			@Named("codProd") String producto) {
 		EntityManager mgr = getEntityManager();
 		Productos prods = new Productos();
 		Imagen imagen = prods.getImagen(mgr, comercio, producto);
 		mgr.close();
 		return imagen;
 	}
-	
+
 	/*
 	 * Obtener calibrado, retorna -9999 si no esta calibrado
 	 */
-	@ApiMethod(name = "GetCalibradoBeacon", path = "get_calibrado_beacon")	
+	@ApiMethod(name = "GetCalibradoBeacon", path = "get_calibrado_beacon")
 	public Mensaje getCalibradoBeacon(@Named("elementoRF") String elemRf) {
 		EntityManager mgr = getEntityManager();
 		ElementosRF elems = new ElementosRF();
 		Mensaje resp = elems.getCalibradoBeacon(mgr, elemRf);
+		return resp;
+	}
+
+	/*
+	 * Actualizar la posicion del cliente a partir del elemento RF
+	 */
+	@ApiMethod(name = "ActualizarPosicion", path = "actualizar_posicion")
+	public Mensaje actualizarPosicion(@Named("usuario") String usuario,
+			@Named("elementoRF") String elemRf, @Named("tipo") String tipo) {
+		EntityManager mgr = getEntityManager();
+		Clientes clis = new Clientes();
+		Mensaje resp = clis.actualizarPosicion(mgr, usuario, elemRf, tipo);
+		return resp;
+	}
+	
+	/*
+	 * Agregar un item al carrito de compras del cliente
+	 */
+	@ApiMethod(name = "AgregarItemCarrito", path = "agregar_item_carrito")
+	public Mensaje agregarItemCarrito(@Named("usuario") String usuario, @Named("paquete") String nompaq) {
+		EntityManager mgr = getEntityManager();
+		Clientes clis = new Clientes();
+		Mensaje resp = clis.agregarItemCarrito(mgr, usuario, nompaq);
+		return resp;
+	}
+
+	/*
+	 * Eliminar un item del carrito de compras del cliente
+	 */
+	@ApiMethod(name = "EliminarItemCarrito", path = "eliminar_item_carrito")
+	public Mensaje eliminarItemCarrito(@Named("usuario") String usuario, @Named("paquete") String nompaq) {
+		EntityManager mgr = getEntityManager();
+		Clientes clis = new Clientes();
+		Mensaje resp = clis.eliminarItemCarrito(mgr, usuario, nompaq);
+		return resp;
+	}
+	
+	/*
+	 * Obtener el carrito de compras del cliente completo, con todos sus items
+	 */
+	@ApiMethod(name = "GetCarritoCompleto", path = "get_carrito_completo")
+	public CarritoVO getCarritoCompleto(@Named("usuario") String usuario) {
+		EntityManager mgr = getEntityManager();
+		Clientes clis = new Clientes();
+		CarritoVO resp = clis.getCarritoCompleto(mgr, usuario);
 		return resp;
 	}
 
@@ -191,6 +240,5 @@ public class Shopping {
 	private static EntityManager getEntityManager() {
 		return EMF.get().createEntityManager();
 	}
-
 
 }

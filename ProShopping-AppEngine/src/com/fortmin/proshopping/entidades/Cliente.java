@@ -1,8 +1,11 @@
 package com.fortmin.proshopping.entidades;
 
 import java.util.Date;
+import java.util.LinkedList;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 
 @Entity
@@ -20,6 +23,8 @@ public class Cliente {
 	private Date ultEntrada;
 	private Date ultSalida;
 	private String ubicacionTemp;
+	@ElementCollection(fetch=FetchType.EAGER)
+	private LinkedList<String> carrito;
 
 	public Cliente(String usuario, String nombre, String email) {
 		this.usuario = usuario;
@@ -33,6 +38,7 @@ public class Cliente {
 		this.ultEntrada = new Date(0);
 		this.ultSalida = new Date(0);
 		this.ubicacionTemp = null;
+		this.carrito = new LinkedList<String>();
 	}
 
 	public String getUsuario() {
@@ -122,5 +128,41 @@ public class Cliente {
 	public void setUbicacionTemp(String ubicacionTemp) {
 		this.ubicacionTemp = ubicacionTemp;
 	}
+	
+	public LinkedList<String> getCarrito() {
+		return carrito;
+	}
+	
+	public void setCarrito(LinkedList<String> carrito) {
+		this.carrito = carrito;
+	}
+	
+	public boolean agregarItemCarrito(String nomPaquete) {
+		if (!hasItemCarrito(nomPaquete)) {
+			carrito.add(nomPaquete);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean eliminarItemCarrito(String nomPaquete) {
+		boolean salir = false;
+		for (int i = 0; i < carrito.size() && !salir; i++) {
+			if (carrito.get(i).equals(nomPaquete)) {
+				carrito.remove(i);
+				salir = true;
+			}
+		}
+		return salir;
+	}
 
+	public boolean hasItemCarrito(String nomPaquete) {
+		boolean esta = false;
+		for (int i = 0; i < carrito.size() && !esta; i++) {
+			if (carrito.get(i).equals(nomPaquete)) {
+				esta = true;
+			}
+		}
+		return esta;
+	}
 }

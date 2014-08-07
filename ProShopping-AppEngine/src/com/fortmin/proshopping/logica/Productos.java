@@ -67,7 +67,7 @@ public class Productos {
 		}
 		return resp;
 	}
-
+	
 	/*
 	 * Cargar la imagen de un producto
 	 */
