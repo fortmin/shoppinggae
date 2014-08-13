@@ -165,4 +165,8 @@ public class Cliente {
 		}
 		return esta;
 	}
+	
+	public void vaciarCarrito() {
+		this.carrito = new LinkedList<String>();
+	}
 }

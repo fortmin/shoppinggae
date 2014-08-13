@@ -1,7 +1,9 @@
-package com.fortmin.proshopping.entidades;
+package com.fortmin.proshopping.valueobjects;
 
-import java.util.Iterator;
 import java.util.LinkedList;
+
+import com.fortmin.proshopping.entidades.Paquete;
+import com.fortmin.proshopping.entidades.Producto;
 
 public class PaqueteVO {
 
@@ -17,6 +19,14 @@ public class PaqueteVO {
 		this.cantProductos = cantProductos;
 		this.puntos = puntos;
 		this.precio = precio;
+		this.productos = new LinkedList<ProductoVO>();
+	}
+	
+	public PaqueteVO(String nombre) {
+		this.nombre = nombre;
+		this.cantProductos = 0;
+		this.puntos = 0;
+		this.precio = 0;
 		this.productos = new LinkedList<ProductoVO>();
 	}
 	

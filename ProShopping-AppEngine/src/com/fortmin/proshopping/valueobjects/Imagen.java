@@ -1,4 +1,4 @@
-package com.fortmin.proshopping.entidades;
+package com.fortmin.proshopping.valueobjects;
 
 import com.google.appengine.api.datastore.Blob;
 

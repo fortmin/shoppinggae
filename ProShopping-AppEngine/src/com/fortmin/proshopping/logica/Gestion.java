@@ -3,8 +3,9 @@ package com.fortmin.proshopping.logica;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
-import com.fortmin.proshopping.entidades.Imagen;
 import com.fortmin.proshopping.entidades.Producto;
+import com.fortmin.proshopping.valueobjects.Imagen;
+import com.fortmin.proshopping.valueobjects.Mensaje;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -320,6 +321,19 @@ public class Gestion {
 		EntityManager mgr = getEntityManager();
 		ElementosRF elems = new ElementosRF();
 		elems.calibrarBeacon(mgr, elemRf, calibre);
+		mgr.close();
+	}
+
+	/*
+	 * Marca una compra como entregada al cliente
+	 */
+	@ApiMethod(name = "MarcarCompraEntregada", path = "marcar_compra_entregada")
+	public Mensaje marcarCompraEntregada(@Named("compra") String compra) {
+		EntityManager mgr = getEntityManager();
+		Compras comps = new Compras();
+		Mensaje resp = comps.marcarCompraEntregada(mgr, compra);
+		mgr.close();
+		return resp;
 	}
 
 	/*

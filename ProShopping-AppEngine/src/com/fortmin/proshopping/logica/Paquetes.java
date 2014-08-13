@@ -9,10 +9,29 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.fortmin.proshopping.entidades.Paquete;
-import com.fortmin.proshopping.entidades.PaqueteVO;
 import com.fortmin.proshopping.entidades.Producto;
+import com.fortmin.proshopping.valueobjects.PaqueteVO;
 
 public class Paquetes {
+
+	/*
+	 * Devuelve el paquete completo con el nombre dado
+	 */
+	public PaqueteVO getPaqueteNombre(EntityManager mgr, String nompaq) {
+		PaqueteVO paquete = null;
+		Paquete paq = this.getPaquete(mgr, nompaq);
+		if (paq != null) {
+			LinkedList<Producto> prods = this.getProductosPaquete(mgr, paq.getNombre());
+			if (prods.size() > 0) {
+				paquete = new PaqueteVO(paq.getNombre(), paq.getCantProductos(), paq.getPuntos(), paq.getPrecio());
+				Iterator<Producto> iprods = prods.iterator();
+				while (iprods.hasNext()) {
+					paquete.agregarProducto(iprods.next());
+				}
+			}
+		}
+		return paquete;
+	}
 
 	/*
 	 * Dada la identificacion de un elemento RF (Tag, Beacon, ...) se devuelve

@@ -3,9 +3,9 @@ package com.fortmin.proshopping.logica;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import com.fortmin.proshopping.entidades.Imagen;
 import com.fortmin.proshopping.entidades.Producto;
-import com.fortmin.proshopping.entidades.ProductoExtVO;
+import com.fortmin.proshopping.valueobjects.Imagen;
+import com.fortmin.proshopping.valueobjects.ProductoExtVO;
 import com.google.appengine.api.datastore.Blob;
 
 public class Productos {

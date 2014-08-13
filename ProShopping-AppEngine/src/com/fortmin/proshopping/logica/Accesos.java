@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import com.fortmin.proshopping.entidades.Acceso;
 import com.fortmin.proshopping.entidades.Cliente;
 import com.fortmin.proshopping.entidades.Estacionamiento;
-import com.fortmin.proshopping.entidades.Mensaje;
+import com.fortmin.proshopping.valueobjects.Mensaje;
 
 public class Accesos {
 

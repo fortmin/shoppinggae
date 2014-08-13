@@ -1,5 +1,6 @@
-package com.fortmin.proshopping.entidades;
+package com.fortmin.proshopping.valueobjects;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class CarritoVO {
@@ -63,6 +64,15 @@ public class CarritoVO {
 
 	public void setPaquetes(LinkedList<PaqueteVO> paquetes) {
 		this.paquetes = paquetes;
+	}
+	
+	public LinkedList<String> getListaPaquetes() {
+		LinkedList<String> lista = new LinkedList<String>();
+		Iterator<PaqueteVO> ipaqs = paquetes.iterator();
+		while (ipaqs.hasNext()) {
+			lista.add(ipaqs.next().getNombre());
+		}
+		return lista;
 	}
 
 }

@@ -5,8 +5,8 @@ import javax.persistence.EntityTransaction;
 
 import com.fortmin.proshopping.entidades.Beacon;
 import com.fortmin.proshopping.entidades.ElementoRF;
-import com.fortmin.proshopping.entidades.Mensaje;
 import com.fortmin.proshopping.entidades.Tag;
+import com.fortmin.proshopping.valueobjects.Mensaje;
 
 public class ElementosRF {
 

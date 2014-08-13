@@ -3,7 +3,7 @@ package com.fortmin.proshopping.logica;
 import javax.persistence.EntityManager;
 
 import com.fortmin.proshopping.entidades.Cliente;
-import com.fortmin.proshopping.entidades.Mensaje;
+import com.fortmin.proshopping.valueobjects.Mensaje;
 
 public class LoginRegistro {
 	

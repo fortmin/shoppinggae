@@ -5,14 +5,15 @@ import java.util.LinkedList;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
-import com.fortmin.proshopping.entidades.Imagen;
-import com.fortmin.proshopping.entidades.Mensaje;
 import com.fortmin.proshopping.entidades.Paquete;
-import com.fortmin.proshopping.entidades.PaqueteVO;
-import com.fortmin.proshopping.entidades.CarritoVO;
 import com.fortmin.proshopping.entidades.Producto;
-import com.fortmin.proshopping.entidades.ProductoExtVO;
 import com.fortmin.proshopping.entidades.Ubicacion;
+import com.fortmin.proshopping.valueobjects.CarritoVO;
+import com.fortmin.proshopping.valueobjects.ComprasVO;
+import com.fortmin.proshopping.valueobjects.Imagen;
+import com.fortmin.proshopping.valueobjects.Mensaje;
+import com.fortmin.proshopping.valueobjects.PaqueteVO;
+import com.fortmin.proshopping.valueobjects.ProductoExtVO;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -231,6 +232,28 @@ public class Shopping {
 		EntityManager mgr = getEntityManager();
 		Clientes clis = new Clientes();
 		CarritoVO resp = clis.getCarritoCompleto(mgr, usuario);
+		return resp;
+	}
+	
+	/*
+	 * Checkout del carrito de compras del cliente, es la compra en si
+	 */
+	@ApiMethod(name = "CheckoutCarrito", path = "checkout_carrito")
+	public Mensaje checkoutCarrito(@Named("usuario") String usuario) {
+		EntityManager mgr = getEntityManager();
+		Clientes clis = new Clientes();
+		Mensaje resp = clis.checkoutCarrito(mgr, usuario);
+		return resp;
+	}
+	
+	/*
+	 * Lista las compras del cliente
+	 */
+	@ApiMethod(name = "GetCompras", path = "get_compras")
+	public LinkedList<ComprasVO> getCompras(@Named("usuario") String usuario) {
+		EntityManager mgr = getEntityManager();
+		Clientes clis = new Clientes();
+		LinkedList<ComprasVO> resp = clis.getCompras(mgr, usuario);
 		return resp;
 	}
 

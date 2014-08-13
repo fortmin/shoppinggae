@@ -3,7 +3,7 @@ package com.fortmin.proshopping.logica;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
-import com.fortmin.proshopping.entidades.Mensaje;
+import com.fortmin.proshopping.valueobjects.Mensaje;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;

@@ -1,5 +1,6 @@
-package com.fortmin.proshopping.entidades;
+package com.fortmin.proshopping.valueobjects;
 
+import com.fortmin.proshopping.entidades.Producto;
 import com.google.appengine.api.datastore.Blob;
 
 public class ProductoExtVO {

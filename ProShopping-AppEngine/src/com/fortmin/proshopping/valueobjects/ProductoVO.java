@@ -1,4 +1,6 @@
-package com.fortmin.proshopping.entidades;
+package com.fortmin.proshopping.valueobjects;
+
+import com.fortmin.proshopping.entidades.Producto;
 
 public class ProductoVO {
 	
