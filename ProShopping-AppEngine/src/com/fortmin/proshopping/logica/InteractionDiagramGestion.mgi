@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <CommunicationClass
+        name="com.fortmin.proshopping.logica.Ubicaciones" x="333" y="465"/>
+    <CommunicationClass name="com.fortmin.proshopping.logica.Comercios"
+        x="27" y="138"/>
+    <CommunicationClass name="com.fortmin.proshopping.logica.Productos"
+        x="512" y="465"/>
+    <CommunicationClass
+        name="com.fortmin.proshopping.logica.ElementosRF" x="785" y="226"/>
+    <CommunicationClass name="com.fortmin.proshopping.logica.Paquetes"
+        x="29" y="334"/>
+    <CommunicationClass name="com.fortmin.proshopping.logica.Accesos"
+        x="68" y="40">
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Clientes"/>
+    </CommunicationClass>
+    <CommunicationClass name="com.fortmin.proshopping.logica.Compras"
+        x="807" y="28"/>
+    <CommunicationClass name="com.fortmin.proshopping.logica.Clientes"
+        x="523" y="39">
+        <Communication destinationClassName="com.fortmin.proshopping.logica.ElementosRF"/>
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Paquetes"/>
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Compras"/>
+    </CommunicationClass>
+    <CommunicationClass name="com.fortmin.proshopping.logica.Gestion"
+        x="455" y="212">
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Ubicaciones"/>
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Comercios"/>
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Productos"/>
+        <Communication destinationClassName="com.fortmin.proshopping.logica.ElementosRF"/>
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Paquetes"/>
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Accesos"/>
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Compras"/>
+    </CommunicationClass>
+</ClassDiagram>

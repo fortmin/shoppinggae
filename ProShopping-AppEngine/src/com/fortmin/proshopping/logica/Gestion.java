@@ -3,14 +3,11 @@ package com.fortmin.proshopping.logica;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
-import com.fortmin.proshopping.entidades.Producto;
 import com.fortmin.proshopping.valueobjects.Imagen;
 import com.fortmin.proshopping.valueobjects.Mensaje;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
-import com.google.api.server.spi.config.Nullable;
-import com.google.appengine.api.datastore.Blob;
 
 @Api(name = "gestion", namespace = @ApiNamespace(ownerDomain = "fortmin.com", ownerName = "fortmin.com", packagePath = "proshopping.logica"))
 public class Gestion {
@@ -135,18 +132,19 @@ public class Gestion {
 		prods.updateProducto(mgr, comercio, codigo, nombre, precio, detalles);
 		mgr.close();
 	}
-	
-	/* 
+
+	/*
 	 * Cargar una imagen en un producto identificado por el comercio y el codigo
 	 */
 	@ApiMethod(name = "cargarimagen", path = "cargar_imagen")
-	public void cargarImagen(@Named("comercio") String comercio, @Named("codProd") String producto, Imagen imagen) {
+	public void cargarImagen(@Named("comercio") String comercio,
+			@Named("codProd") String producto, Imagen imagen) {
 		EntityManager mgr = getEntityManager();
 		Productos prods = new Productos();
 		prods.cargarImagen(mgr, comercio, producto, imagen);
 		mgr.close();
 	}
-	
+
 	/*
 	 * Crear un paquete nuevo con una lista de productos vacia y luego los
 	 * productos deben agregarse con insertProductoPaquete

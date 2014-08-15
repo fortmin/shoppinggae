@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <CommunicationClass
+        name="com.fortmin.proshopping.logica.LoginRegistro" x="448" y="223">
+        <Communication destinationClassName="com.fortmin.proshopping.entidades.Cliente"/>
+    </CommunicationClass>
+    <CommunicationClass name="com.fortmin.proshopping.entidades.Cliente"
+        x="706" y="223"/>
+    <CommunicationClass name="com.fortmin.proshopping.logica.Seguridad"
+        x="192" y="224">
+        <Communication destinationClassName="com.fortmin.proshopping.logica.LoginRegistro"/>
+    </CommunicationClass>
+</ClassDiagram>

@@ -201,12 +201,13 @@ public class Shopping {
 		Mensaje resp = clis.actualizarPosicion(mgr, usuario, elemRf, tipo);
 		return resp;
 	}
-	
+
 	/*
 	 * Agregar un item al carrito de compras del cliente
 	 */
 	@ApiMethod(name = "AgregarItemCarrito", path = "agregar_item_carrito")
-	public Mensaje agregarItemCarrito(@Named("usuario") String usuario, @Named("paquete") String nompaq) {
+	public Mensaje agregarItemCarrito(@Named("usuario") String usuario,
+			@Named("paquete") String nompaq) {
 		EntityManager mgr = getEntityManager();
 		Clientes clis = new Clientes();
 		Mensaje resp = clis.agregarItemCarrito(mgr, usuario, nompaq);
@@ -217,13 +218,14 @@ public class Shopping {
 	 * Eliminar un item del carrito de compras del cliente
 	 */
 	@ApiMethod(name = "EliminarItemCarrito", path = "eliminar_item_carrito")
-	public Mensaje eliminarItemCarrito(@Named("usuario") String usuario, @Named("paquete") String nompaq) {
+	public Mensaje eliminarItemCarrito(@Named("usuario") String usuario,
+			@Named("paquete") String nompaq) {
 		EntityManager mgr = getEntityManager();
 		Clientes clis = new Clientes();
 		Mensaje resp = clis.eliminarItemCarrito(mgr, usuario, nompaq);
 		return resp;
 	}
-	
+
 	/*
 	 * Obtener el carrito de compras del cliente completo, con todos sus items
 	 */
@@ -234,7 +236,7 @@ public class Shopping {
 		CarritoVO resp = clis.getCarritoCompleto(mgr, usuario);
 		return resp;
 	}
-	
+
 	/*
 	 * Checkout del carrito de compras del cliente, es la compra en si
 	 */
@@ -245,7 +247,7 @@ public class Shopping {
 		Mensaje resp = clis.checkoutCarrito(mgr, usuario);
 		return resp;
 	}
-	
+
 	/*
 	 * Lista las compras del cliente
 	 */
@@ -254,6 +256,30 @@ public class Shopping {
 		EntityManager mgr = getEntityManager();
 		Clientes clis = new Clientes();
 		LinkedList<ComprasVO> resp = clis.getCompras(mgr, usuario);
+		return resp;
+	}
+
+	/*
+	 * Agrega puntos al cliente, utilizada para la transferencia de puntos
+	 */
+	@ApiMethod(name = "AgregarPuntos", path = "agregar_puntos")
+	public Mensaje agregarPuntos(@Named("usuario") String usuario,
+			@Named("puntos") int puntos) {
+		EntityManager mgr = getEntityManager();
+		Clientes clis = new Clientes();
+		Mensaje resp = clis.agregarPuntos(mgr, usuario, puntos);
+		return resp;
+	}
+
+	/*
+	 * Quita puntos al cliente, utilizada para la transferencia de puntos
+	 */
+	@ApiMethod(name = "QuitarPuntos", path = "quitar_puntos")
+	public Mensaje quitarPuntos(@Named("puntos") int puntos,
+			@Named("usuario") String usuario) {
+		EntityManager mgr = getEntityManager();
+		Clientes clis = new Clientes();
+		Mensaje resp = clis.quitarPuntos(mgr, usuario, puntos);
 		return resp;
 	}
 

@@ -271,13 +271,59 @@ public class Clientes {
 					comprasvo.add(compvo);
 				}
 				txn.commit();
-			}
-			else
+			} else
 				txn.rollback();
-		}
-		else
+		} else
 			txn.rollback();
 		return comprasvo;
+	}
+
+	/*
+	 * Agrega puntos al cliente, utilizada para la transferencia de puntos
+	 */
+	public Mensaje agregarPuntos(EntityManager mgr, String usuario, int puntos) {
+		Mensaje result = null;
+		EntityTransaction txn = mgr.getTransaction();
+		txn.begin();
+		Cliente cliente = mgr.find(Cliente.class, usuario);
+		if (cliente != null) {
+			cliente.setPuntaje(cliente.getPuntaje() + puntos);
+			mgr.persist(cliente);
+			txn.commit();
+			result = new Mensaje("AgregarPuntos", "OK");
+		} else {
+			txn.rollback();
+			result = new Mensaje("AgregarPuntos", usuario
+					+ "::USUARIO_INEXISTENTE");
+		}
+		return result;
+	}
+
+	/*
+	 * Quita puntos al cliente, utilizada para la transferencia de puntos
+	 */
+	public Mensaje quitarPuntos(EntityManager mgr, String usuario, int puntos) {
+		Mensaje result = null;
+		EntityTransaction txn = mgr.getTransaction();
+		txn.begin();
+		Cliente cliente = mgr.find(Cliente.class, usuario);
+		if (cliente != null) {
+			if (cliente.getPuntaje() > puntos) {
+				cliente.setPuntaje(cliente.getPuntaje() - puntos);
+				mgr.persist(cliente);
+				txn.commit();
+				result = new Mensaje("QuitarPuntos", "OK");
+			} else {
+				txn.rollback();
+				result = new Mensaje("QuitarPuntos", usuario
+						+ "::SALDO_INSUFICIENTE");
+			}
+		} else {
+			txn.rollback();
+			result = new Mensaje("QuitarPuntos", usuario
+					+ "::USUARIO_INEXISTENTE");
+		}
+		return result;
 	}
 
 }

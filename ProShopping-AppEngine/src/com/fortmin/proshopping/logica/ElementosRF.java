@@ -4,31 +4,30 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import com.fortmin.proshopping.entidades.Beacon;
-import com.fortmin.proshopping.entidades.ElementoRF;
 import com.fortmin.proshopping.entidades.Tag;
 import com.fortmin.proshopping.valueobjects.Mensaje;
 
 public class ElementosRF {
 
 	/*
-	 * Devuelve el nombre de la ubicacion asociada a un elementoRf
-	 * El tipo debe ser NFCTAG o BEACON
+	 * Devuelve el nombre de la ubicacion asociada a un elementoRf El tipo debe
+	 * ser NFCTAG o BEACON
 	 */
-	public String obtenerUbicacionElementoRf(EntityManager mgr, String id, String tipo) {
+	public String obtenerUbicacionElementoRf(EntityManager mgr, String id,
+			String tipo) {
 		String ubicacion = null;
 		if (tipo.equals("NFCTAG")) {
 			Tag tag = mgr.find(Tag.class, id);
 			if (tag != null)
 				ubicacion = tag.getUbicacion();
-		}
-		else if (tipo.equals("BEACON")) {
+		} else if (tipo.equals("BEACON")) {
 			Beacon beacon = mgr.find(Beacon.class, id);
 			if (beacon != null)
 				ubicacion = beacon.getUbicacion();
 		}
 		return ubicacion;
 	}
-	
+
 	/*
 	 * Insertar un Tag NFC junto con sus datos
 	 */
@@ -108,7 +107,7 @@ public class ElementosRF {
 			mgr.remove(beacon);
 		}
 	}
-	
+
 	/*
 	 * Calibrar un Beacon
 	 */
@@ -133,13 +132,13 @@ public class ElementosRF {
 		if (beacon != null) {
 			if (beacon.isCalibrado()) {
 				int calibre = beacon.getCalibre();
-				resp = new Mensaje("GetCalibradoBeacon","OK",calibre);
-			}
-			else
-				resp = new Mensaje("GetCalibradoBeacon",id+"::BEACON_NO_CALIBRADO");
-		}
-		else
-			resp = new Mensaje("GetCalibradoBeacon",id+"::BEACON_INEXISTENTE");
+				resp = new Mensaje("GetCalibradoBeacon", "OK", calibre);
+			} else
+				resp = new Mensaje("GetCalibradoBeacon", id
+						+ "::BEACON_NO_CALIBRADO");
+		} else
+			resp = new Mensaje("GetCalibradoBeacon", id
+					+ "::BEACON_INEXISTENTE");
 		return resp;
 	}
 

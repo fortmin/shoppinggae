@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <CommunicationClass
+        name="com.fortmin.proshopping.logica.Administracion" x="188" y="171">
+        <Communication destinationClassName="com.fortmin.proshopping.logica.Parametros"/>
+    </CommunicationClass>
+    <CommunicationClass name="com.fortmin.proshopping.logica.Parametros"
+        x="443" y="170"/>
+</ClassDiagram>
