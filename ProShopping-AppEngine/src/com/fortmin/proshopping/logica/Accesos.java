@@ -1,5 +1,6 @@
 package com.fortmin.proshopping.logica;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -33,6 +34,15 @@ public class Accesos {
 					mgr.persist(cliente);
 					txn.commit();
 					clis.actualizarPosicion(mgr, usuario, elemRf, "NFCTAG");
+					try {
+						clis.notificarAmigos(mgr,
+								"Su amigo " + cliente.getNombre()
+										+ " acaba de ingresar al Shopping",
+								usuario);
+					} catch (IOException e) {
+						result = new Mensaje("IngresoEstacionamiento",
+								"OK::IOERROR_NOTIFICAR_AMIGOS");
+					}
 					result = new Mensaje("IngresoEstacionamiento", "OK");
 				} else {
 					txn.rollback();
@@ -69,8 +79,10 @@ public class Accesos {
 					clis.actualizarPosicion(mgr, usuario, elemRf, "NFCTAG");
 					Utils utils = new Utils();
 					Parametros params = new Parametros();
-					if (utils.diffFechasSegundos(cliente.getUltEntrada(),cliente.getUltSalida()) < 
-							params.getParametroNumero(mgr, "PLAZO_ESTACIONAMIENTO").getValor())
+					if (utils.diffFechasSegundos(cliente.getUltEntrada(),
+							cliente.getUltSalida()) < params
+							.getParametroNumero(mgr, "PLAZO_ESTACIONAMIENTO")
+							.getValor())
 						result = new Mensaje("EgresoEstacionamiento", "OK");
 					else
 						result = new Mensaje("EgresoEstacionamiento", usuario

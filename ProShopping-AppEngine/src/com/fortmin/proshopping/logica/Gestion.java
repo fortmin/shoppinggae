@@ -3,11 +3,13 @@ package com.fortmin.proshopping.logica;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 
-import com.fortmin.proshopping.valueobjects.Imagen;
+import com.fortmin.proshopping.entidades.DeviceInfo;
+import com.fortmin.proshopping.valueobjects.ImagenVO;
 import com.fortmin.proshopping.valueobjects.Mensaje;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.appengine.api.images.Image;
 
 @Api(name = "gestion", namespace = @ApiNamespace(ownerDomain = "fortmin.com", ownerName = "fortmin.com", packagePath = "proshopping.logica"))
 public class Gestion {
@@ -100,7 +102,6 @@ public class Gestion {
 			@Named("detalles") String detalles) {
 		EntityManager mgr = getEntityManager();
 		Productos prods = new Productos();
-		byte[] imagen = null;
 		prods.insertProducto(mgr, comercio, codigo, nombre, precio, detalles);
 		mgr.close();
 	}
@@ -138,10 +139,35 @@ public class Gestion {
 	 */
 	@ApiMethod(name = "cargarimagen", path = "cargar_imagen")
 	public void cargarImagen(@Named("comercio") String comercio,
-			@Named("codProd") String producto, Imagen imagen) {
+			@Named("codProd") String producto, ImagenVO imagen) {
 		EntityManager mgr = getEntityManager();
 		Productos prods = new Productos();
 		prods.cargarImagen(mgr, comercio, producto, imagen);
+		mgr.close();
+	}
+
+	/*
+	 * Cargar una imagen en un producto identificado por el comercio y el codigo
+	 */
+	@ApiMethod(name = "CargarImagenBlob", path = "cargar_imagen_blob")
+	public void cargarImagenBlob(@Named("comercio") String comercio,
+			@Named("codProd") String producto, ImagenVO imagen) {
+		EntityManager mgr = getEntityManager();
+		Productos prods = new Productos();
+		prods.cargarImagenBlob(mgr, comercio, producto, imagen);
+		mgr.close();
+	}
+
+	/*
+	 * Cargar una imagen en un producto identificado por el comercio y el codigo
+	 * utilizando el Image API
+	 */
+	@ApiMethod(name = "CargarImagenImage", path = "cargar_imagen_image")
+	public void cargarImagenImage(@Named("comercio") String comercio,
+			@Named("codProd") String producto, Image imagen) {
+		EntityManager mgr = getEntityManager();
+		Productos prods = new Productos();
+		prods.cargarImagenImage(mgr, comercio, producto, imagen);
 		mgr.close();
 	}
 
@@ -330,6 +356,18 @@ public class Gestion {
 		EntityManager mgr = getEntityManager();
 		Compras comps = new Compras();
 		Mensaje resp = comps.marcarCompraEntregada(mgr, compra);
+		mgr.close();
+		return resp;
+	}
+
+	/*
+	 * Obtener el DeviceInfo de un movil en base al usuario
+	 */
+	@ApiMethod(name = "GetDeviceInfoPorUsuario", path = "get_deviceinfo_por_usuario")
+	public DeviceInfo getDeviceInfoPorUsuario(@Named("usuario") String usuario) {
+		EntityManager mgr = getEntityManager();
+		Dispositivos disps = new Dispositivos();
+		DeviceInfo resp = disps.getDeviceInfoPorUsuario(mgr, usuario);
 		mgr.close();
 		return resp;
 	}

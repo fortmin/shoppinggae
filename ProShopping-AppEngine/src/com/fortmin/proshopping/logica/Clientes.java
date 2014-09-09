@@ -1,17 +1,22 @@
 package com.fortmin.proshopping.logica;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import com.fortmin.proshopping.entidades.Cliente;
 import com.fortmin.proshopping.entidades.Compra;
 import com.fortmin.proshopping.entidades.Paquete;
 import com.fortmin.proshopping.valueobjects.CarritoVO;
 import com.fortmin.proshopping.valueobjects.ComprasVO;
+import com.fortmin.proshopping.valueobjects.EstacionamientoVO;
 import com.fortmin.proshopping.valueobjects.Mensaje;
 import com.fortmin.proshopping.valueobjects.PaqueteVO;
 
@@ -216,7 +221,7 @@ public class Clientes {
 				Cliente cliente = mgr.find(Cliente.class, usuario);
 				if (cliente != null) {
 					LinkedList<String> paquetes = carrito.getListaPaquetes();
-					Compra compra = new Compra(cliente.getNombre(),
+					Compra compra = new Compra(cliente.getUsuario(),
 							carrito.getCantItems(), carrito.getPrecioCarrito(),
 							carrito.getPuntosCarrito(), paquetes);
 					mgr.persist(compra);
@@ -324,6 +329,72 @@ public class Clientes {
 					+ "::USUARIO_INEXISTENTE");
 		}
 		return result;
+	}
+
+	/*
+	 * Devuelve informacion sobre el tiempo de estacionamiento que dispone aun
+	 * el cliente para retirarse sin pagar por ello
+	 */
+	public EstacionamientoVO getTiempoEstacionamiento(EntityManager mgr,
+			String usuario) {
+		EstacionamientoVO estvo = null;
+		Parametros params = new Parametros();
+		long pzoest = params.getParametroNumeroValor(mgr,
+				"PLAZO_ESTACIONAMIENTO");
+		if (pzoest != -1) {
+			Cliente cliente = mgr.find(Cliente.class, usuario);
+			if (cliente != null) {
+				estvo = new EstacionamientoVO(cliente.isPresente());
+				if (estvo.isPresente()) {
+					estvo.setEntrada(cliente.getUltEntrada());
+					estvo.setActual(new Date());
+					Utils ut = new Utils();
+					estvo.setTopSalidaGratis(ut.sumaFechaSegundos(
+							cliente.getUltEntrada(), pzoest));
+				}
+			}
+		}
+		return estvo;
+	}
+
+	public LinkedList<String> obtenerAmigosANotificar(EntityManager mgr,
+			String usuario) {
+		LinkedList<String> lamigos = new LinkedList<String>();
+		String amigo = null;
+		Cliente cliente = null;
+		if (usuario.equals("jafortti"))
+			amigo = "fminos";
+		else if (usuario.equals("fminos"))
+			amigo = "jafortti";
+		else
+			amigo = "jafortti";
+		Query querycli = mgr
+				.createQuery(
+						"SELECT c FROM Cliente c WHERE c.visible = true AND c.usuario = :amigo",
+						Cliente.class);
+		querycli.setParameter("amigo", amigo);
+		try {
+			cliente = (Cliente) querycli.getSingleResult();
+		} catch (NoResultException e) {
+			cliente = null;
+		}
+		if (cliente != null)
+			lamigos.add(cliente.getUsuario());
+		return lamigos;
+	}
+
+	/*
+	 * Notifica a los amigos que estén presentes en el Shopping y que esten
+	 * anotados como visibles.
+	 */
+	public void notificarAmigos(EntityManager mgr, String mensaje,
+			String usuario) throws IOException {
+		Iterator<String> ilamigos = obtenerAmigosANotificar(mgr, usuario)
+				.iterator();
+		MessageEndpoint msgendp = new MessageEndpoint();
+		while (ilamigos.hasNext()) {
+			msgendp.enviarMensaje(mensaje, usuario);
+		}
 	}
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ClassDiagram>
-    <Class name="com.fortmin.proshopping.entidades.Beacon" x="715" y="140">
+    <Class name="com.fortmin.proshopping.entidades.Tag" x="789" y="153">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -10,7 +10,7 @@
             accessors-accepted="false" constructors-accepted="false"/>
         <Extension destinationClassName="com.fortmin.proshopping.entidades.ElementoRF"/>
     </Class>
-    <Class name="com.fortmin.proshopping.entidades.Tag" x="871" y="179">
+    <Class name="com.fortmin.proshopping.entidades.Beacon" x="662" y="164">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -19,15 +19,6 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
         <Extension destinationClassName="com.fortmin.proshopping.entidades.ElementoRF"/>
-    </Class>
-    <Class name="com.fortmin.proshopping.entidades.Paquete" x="7" y="326">
-        <AttributesDisplayFilter public-accepted="true"
-            private-accepted="true" protected-accepted="true"
-            default-accepted="true" static-accepted="false"/>
-        <MethodDisplayFilter public-accepted="true"
-            private-accepted="false" protected-accepted="false"
-            default-accepted="false" static-accepted="false"
-            accessors-accepted="false" constructors-accepted="false"/>
     </Class>
     <Class name="com.fortmin.proshopping.entidades.Acceso" x="305" y="63">
         <AttributesDisplayFilter public-accepted="true"
@@ -38,7 +29,7 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="com.fortmin.proshopping.entidades.Compra" x="272" y="340">
+    <Class name="com.fortmin.proshopping.entidades.Paquete" x="18" y="323">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -47,7 +38,7 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="com.fortmin.proshopping.entidades.ElementoRF" x="737" y="30">
+    <Class name="com.fortmin.proshopping.entidades.Compra" x="600" y="329">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -56,7 +47,7 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="com.fortmin.proshopping.entidades.Ubicacion" x="513" y="343">
+    <Class name="com.fortmin.proshopping.entidades.ElementoRF" x="703" y="38">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -65,7 +56,7 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="com.fortmin.proshopping.entidades.Cliente" x="11" y="27">
+    <Class name="com.fortmin.proshopping.entidades.Cliente" x="23" y="18">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -74,7 +65,7 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="com.fortmin.proshopping.entidades.Comercio" x="607" y="36">
+    <Class name="com.fortmin.proshopping.entidades.Ubicacion" x="530" y="55">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -84,7 +75,7 @@
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
     <Class name="com.fortmin.proshopping.entidades.Estacionamiento"
-        x="478" y="187">
+        x="350" y="217">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -94,7 +85,16 @@
             accessors-accepted="false" constructors-accepted="false"/>
         <Extension destinationClassName="com.fortmin.proshopping.entidades.Acceso"/>
     </Class>
-    <Class name="com.fortmin.proshopping.entidades.Peatonal" x="357" y="219">
+    <Class name="com.fortmin.proshopping.entidades.Comercio" x="446" y="327">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="com.fortmin.proshopping.entidades.Peatonal" x="263" y="220">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -104,7 +104,7 @@
             accessors-accepted="false" constructors-accepted="false"/>
         <Extension destinationClassName="com.fortmin.proshopping.entidades.Acceso"/>
     </Class>
-    <Class name="com.fortmin.proshopping.entidades.Producto" x="695" y="328">
+    <Class name="com.fortmin.proshopping.entidades.Producto" x="276" y="328">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>

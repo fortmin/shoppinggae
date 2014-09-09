@@ -19,7 +19,7 @@ public class Producto {
 	private String tipoImagen;
 
 	public Producto(String comercio, String codigo, String nombre, float precio) {
-		this.clave = comercio+"::"+codigo;
+		this.clave = comercio + "::" + codigo;
 		this.comercio = comercio;
 		this.codigo = codigo;
 		this.nombre = nombre;
@@ -29,8 +29,9 @@ public class Producto {
 		this.tipoImagen = "";
 	}
 
-	public Producto(String comercio, String codigo, String nombre, float precio, String detalles) {
-		this.clave = comercio+"::"+codigo;
+	public Producto(String comercio, String codigo, String nombre,
+			float precio, String detalles) {
+		this.clave = comercio + "::" + codigo;
 		this.comercio = comercio;
 		this.codigo = codigo;
 		this.nombre = nombre;
@@ -40,8 +41,9 @@ public class Producto {
 		this.tipoImagen = "";
 	}
 
-	public Producto(String comercio, String codigo, String nombre, float precio, String detalles, Blob imagen, String tipoImg) {
-		this.clave = comercio+"::"+codigo;
+	public Producto(String comercio, String codigo, String nombre,
+			float precio, String detalles, Blob imagen, String tipoImg) {
+		this.clave = comercio + "::" + codigo;
 		this.comercio = comercio;
 		this.codigo = codigo;
 		this.nombre = nombre;
@@ -52,7 +54,7 @@ public class Producto {
 	}
 
 	public Producto(String comercio, String codigo) {
-		this.clave = comercio+"::"+codigo;
+		this.clave = comercio + "::" + codigo;
 		this.comercio = comercio;
 		this.codigo = codigo;
 		this.nombre = null;

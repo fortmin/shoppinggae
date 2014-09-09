@@ -2,11 +2,11 @@ package com.fortmin.proshopping.valueobjects;
 
 import com.google.appengine.api.datastore.Blob;
 
-public class Imagen {
+public class ImagenVO {
 
 	private Blob imagen;
 	
-	public Imagen() {
+	public ImagenVO() {
 	}
 	
 	public Blob getImagen() {

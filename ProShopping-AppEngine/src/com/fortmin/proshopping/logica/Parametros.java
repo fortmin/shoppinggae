@@ -5,21 +5,23 @@ import javax.persistence.EntityManager;
 import com.fortmin.proshopping.entidades.ConfigLong;
 
 public class Parametros {
-	
+
 	public ConfigLong getParametroNumero(EntityManager mgr, String codparam) {
 		ConfigLong param = mgr.find(ConfigLong.class, codparam);
 		return param;
 	}
-	
-	public void insertParametroNumero(EntityManager mgr, String nomparam, long valor) {
+
+	public void insertParametroNumero(EntityManager mgr, String nomparam,
+			long valor) {
 		ConfigLong cfglong = mgr.find(ConfigLong.class, nomparam);
 		if (cfglong == null) {
 			cfglong = new ConfigLong(nomparam, valor);
 			mgr.persist(cfglong);
 		}
 	}
-	
-	public void updateParametroNumero(EntityManager mgr, String nomparam, long valor) {
+
+	public void updateParametroNumero(EntityManager mgr, String nomparam,
+			long valor) {
 		ConfigLong cfglong = mgr.find(ConfigLong.class, nomparam);
 		if (cfglong != null) {
 			cfglong.setValor(valor);
@@ -32,5 +34,13 @@ public class Parametros {
 		if (cfglong != null) {
 			mgr.remove(cfglong);
 		}
+	}
+
+	public long getParametroNumeroValor(EntityManager mgr, String codparam) {
+		ConfigLong param = this.getParametroNumero(mgr, codparam);
+		long result = -1;
+		if (param != null)
+			result = param.getValor();
+		return result;
 	}
 }

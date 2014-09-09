@@ -4,9 +4,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import com.fortmin.proshopping.entidades.Producto;
-import com.fortmin.proshopping.valueobjects.Imagen;
+import com.fortmin.proshopping.valueobjects.ImagenVO;
 import com.fortmin.proshopping.valueobjects.ProductoExtVO;
 import com.google.appengine.api.datastore.Blob;
+import com.google.appengine.api.images.Image;
 
 public class Productos {
 
@@ -55,10 +56,11 @@ public class Productos {
 		trans.commit();
 	}
 
-	/* 
+	/*
 	 * Obtener todos los datos del producto incluyendo su imagen
 	 */
-	public ProductoExtVO getProductoCompleto(EntityManager mgr, String comercio, String codigo) {
+	public ProductoExtVO getProductoCompleto(EntityManager mgr,
+			String comercio, String codigo) {
 		ProductoExtVO resp = null;
 		Producto producto = new Producto(comercio, codigo);
 		producto = mgr.find(Producto.class, producto.getClave());
@@ -67,11 +69,12 @@ public class Productos {
 		}
 		return resp;
 	}
-	
+
 	/*
 	 * Cargar la imagen de un producto
 	 */
-	public void cargarImagen(EntityManager mgr, String comercio, String producto, Imagen imagen) {
+	public void cargarImagen(EntityManager mgr, String comercio,
+			String producto, ImagenVO imagen) {
 		Producto prod = new Producto(comercio, producto);
 		prod = mgr.find(Producto.class, prod.getClave());
 		if (prod != null) {
@@ -82,17 +85,45 @@ public class Productos {
 	}
 
 	/*
-	 * Obtener la imagen de un producto
+	 * Cargar la imagen de un producto
 	 */
-	public Imagen getImagen(EntityManager mgr, String comercio, String producto) {
-		Imagen imagen = null;
+	public void cargarImagenBlob(EntityManager mgr, String comercio,
+			String producto, ImagenVO imagen) {
 		Producto prod = new Producto(comercio, producto);
 		prod = mgr.find(Producto.class, prod.getClave());
 		if (prod != null) {
-			imagen = new Imagen();
+			prod.setImagen(imagen.getImagen());
+			prod.setTipoImagen("image/png");
+			mgr.persist(prod);
+		}
+	}
+
+	/*
+	 * Cargar la imagen de un producto utilizando el Image API
+	 */
+	public void cargarImagenImage(EntityManager mgr, String comercio,
+			String producto, Image imagen) {
+		Producto prod = new Producto(comercio, producto);
+		prod = mgr.find(Producto.class, prod.getClave());
+		if (prod != null) {
+			prod.setImagen(new Blob(imagen.getImageData()));
+			prod.setTipoImagen("image/png");
+			mgr.persist(prod);
+		}
+	}
+
+	/*
+	 * Obtener la imagen de un producto
+	 */
+	public ImagenVO getImagen(EntityManager mgr, String comercio, String producto) {
+		ImagenVO imagen = null;
+		Producto prod = new Producto(comercio, producto);
+		prod = mgr.find(Producto.class, prod.getClave());
+		if (prod != null) {
+			imagen = new ImagenVO();
 			imagen.setImagen(prod.getImagen());
 		}
 		return imagen;
 	}
-	
+
 }

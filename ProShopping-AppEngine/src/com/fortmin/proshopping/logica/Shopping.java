@@ -10,7 +10,7 @@ import com.fortmin.proshopping.entidades.Producto;
 import com.fortmin.proshopping.entidades.Ubicacion;
 import com.fortmin.proshopping.valueobjects.CarritoVO;
 import com.fortmin.proshopping.valueobjects.ComprasVO;
-import com.fortmin.proshopping.valueobjects.Imagen;
+import com.fortmin.proshopping.valueobjects.EstacionamientoVO;
 import com.fortmin.proshopping.valueobjects.Mensaje;
 import com.fortmin.proshopping.valueobjects.PaqueteVO;
 import com.fortmin.proshopping.valueobjects.ProductoExtVO;
@@ -87,7 +87,8 @@ public class Shopping {
 			@Named("usuario") String usuario) {
 		EntityManager mgr = getEntityManager();
 		Accesos accs = new Accesos();
-		Mensaje resp = accs.ingresoEstacionamiento(mgr, elemRf, usuario);
+		Mensaje resp;
+		resp = accs.ingresoEstacionamiento(mgr, elemRf, usuario);
 		mgr.close();
 		return resp;
 	}
@@ -163,20 +164,6 @@ public class Shopping {
 		Productos prods = new Productos();
 		ProductoExtVO resp = prods.getProductoCompleto(mgr, comercio, codigo);
 		return resp;
-	}
-
-	/*
-	 * Obtener una imagen con un producto identificado por el comercio y el
-	 * codigo
-	 */
-	@ApiMethod(name = "GetImagen", path = "get_imagen")
-	public Imagen getImagen(@Named("comercio") String comercio,
-			@Named("codProd") String producto) {
-		EntityManager mgr = getEntityManager();
-		Productos prods = new Productos();
-		Imagen imagen = prods.getImagen(mgr, comercio, producto);
-		mgr.close();
-		return imagen;
 	}
 
 	/*
@@ -280,6 +267,18 @@ public class Shopping {
 		EntityManager mgr = getEntityManager();
 		Clientes clis = new Clientes();
 		Mensaje resp = clis.quitarPuntos(mgr, usuario, puntos);
+		return resp;
+	}
+
+	/*
+	 * Quita puntos al cliente, utilizada para la transferencia de puntos
+	 */
+	@ApiMethod(name = "GetTiempoEstacionamiento", path = "get_tiempo_estacionamiento")
+	public EstacionamientoVO getTiempoEstacionamiento(
+			@Named("usuario") String usuario) {
+		EntityManager mgr = getEntityManager();
+		Clientes clis = new Clientes();
+		EstacionamientoVO resp = clis.getTiempoEstacionamiento(mgr, usuario);
 		return resp;
 	}
 

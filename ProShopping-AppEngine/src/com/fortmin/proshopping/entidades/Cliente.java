@@ -23,7 +23,7 @@ public class Cliente {
 	private Date ultEntrada;
 	private Date ultSalida;
 	private String ubicacionTemp;
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.EAGER)
 	private LinkedList<String> carrito;
 
 	public Cliente(String usuario, String nombre, String email) {
@@ -32,7 +32,7 @@ public class Cliente {
 		this.nombre = nombre;
 		this.email = email;
 		this.puntaje = 0;
-		this.logged = false;;
+		this.logged = false;
 		this.presente = false;
 		this.visible = false;
 		this.ultEntrada = new Date(0);
@@ -128,15 +128,15 @@ public class Cliente {
 	public void setUbicacionTemp(String ubicacionTemp) {
 		this.ubicacionTemp = ubicacionTemp;
 	}
-	
+
 	public LinkedList<String> getCarrito() {
 		return carrito;
 	}
-	
+
 	public void setCarrito(LinkedList<String> carrito) {
 		this.carrito = carrito;
 	}
-	
+
 	public boolean agregarItemCarrito(String nomPaquete) {
 		if (!hasItemCarrito(nomPaquete)) {
 			carrito.add(nomPaquete);
@@ -144,7 +144,7 @@ public class Cliente {
 		}
 		return false;
 	}
-	
+
 	public boolean eliminarItemCarrito(String nomPaquete) {
 		boolean salir = false;
 		for (int i = 0; i < carrito.size() && !salir; i++) {
@@ -165,7 +165,7 @@ public class Cliente {
 		}
 		return esta;
 	}
-	
+
 	public void vaciarCarrito() {
 		this.carrito = new LinkedList<String>();
 	}

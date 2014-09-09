@@ -3,7 +3,7 @@ package com.fortmin.proshopping.logica;
 import java.util.Date;
 
 public class Utils {
-	
+
 	/*
 	 * Convierte la fecha a formato string de acuerdo al formato que se quiera
 	 * Ejemplo de formato: "MM-dd-yyyy"
@@ -12,7 +12,7 @@ public class Utils {
 		String fechastr = new java.text.SimpleDateFormat(formato).format(fecha);
 		return fechastr;
 	}
-	
+
 	/*
 	 * Convierte la fecha a formato string de acuerdo al formato que se quiera
 	 * Ejemplo de formato: "hh:mm:ss"
@@ -21,7 +21,7 @@ public class Utils {
 		String horastr = new java.text.SimpleDateFormat(formato).format(fecha);
 		return horastr;
 	}
-	
+
 	/*
 	 * Devuelve la diferencia entre 2 fechas en segundos
 	 */
@@ -31,6 +31,13 @@ public class Utils {
 			resp = (fechaHasta.getTime() - fechaDesde.getTime()) / 1000;
 		}
 		return resp;
+	}
+
+	/*
+	 * Devuelve la fecha suma entre 1 fecha y un valor en segundos
+	 */
+	public Date sumaFechaSegundos(Date fechaDesde, long segundos) {
+		return new Date(fechaDesde.getTime() + segundos * 1000);
 	}
 
 }
