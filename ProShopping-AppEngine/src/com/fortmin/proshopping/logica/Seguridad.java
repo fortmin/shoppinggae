@@ -10,7 +10,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 
 @Api(name = "seguridad", namespace = @ApiNamespace(ownerDomain = "fortmin.com", ownerName = "fortmin.com", packagePath = "proshopping.logica"))
 public class Seguridad {
-	
+
 	/*
 	 * Realizar el registro de un nuevo cliente
 	 */
@@ -56,6 +56,5 @@ public class Seguridad {
 	private static EntityManager getEntityManager() {
 		return EMF.get().createEntityManager();
 	}
-
 
 }

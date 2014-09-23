@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import com.fortmin.proshopping.entidades.DeviceInfo;
@@ -155,8 +156,10 @@ public class MessageEndpoint {
 			@Named("usuario") String usuario) throws IOException {
 		Dispositivos disps = new Dispositivos();
 		EntityManager mgr = getEntityManager();
+		EntityTransaction txn = mgr.getTransaction();
+		txn.begin();
 		DeviceInfo deviceInfo = disps.getDeviceInfoPorUsuario(mgr, usuario);
-		mgr.close();
+		// mgr.close();
 		if (deviceInfo != null) {
 			Sender sender = new Sender(API_KEY);
 			// create a MessageData entity with a timestamp of when it was
@@ -164,17 +167,18 @@ public class MessageEndpoint {
 			MessageData messageObj = new MessageData();
 			messageObj.setMessage(message);
 			messageObj.setTimestamp(System.currentTimeMillis());
-			mgr = getEntityManager();
-			try {
-				mgr.persist(messageObj);
-			} finally {
-				mgr.close();
-			}
+			// mgr = getEntityManager();
+			mgr.persist(messageObj);
+			/*
+			 * try { mgr.persist(messageObj); } finally { mgr.close(); }
+			 */
 			doSendViaGcm(message, sender, deviceInfo);
-			mgr = getEntityManager();
+			// mgr = getEntityManager();
 			mgr.remove(messageObj);
-			mgr.close();
-		}
+			// mgr.close();
+			txn.commit();
+		} else
+			txn.rollback();
 	}
 
 	/**

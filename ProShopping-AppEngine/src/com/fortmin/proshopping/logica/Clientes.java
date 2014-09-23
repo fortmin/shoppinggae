@@ -74,7 +74,7 @@ public class Clientes {
 			else
 				result = new Mensaje("GetVisibilidadCliente", "INVISIBLE");
 		} else
-			result = new Mensaje("GetPuntajeCliente", usuario
+			result = new Mensaje("GetVisibilidadCliente", usuario
 					+ "::USUARIO_EXISTENTE");
 		return result;
 	}
@@ -89,8 +89,9 @@ public class Clientes {
 		if (cliente != null) {
 			cliente.setVisible(visible);
 			mgr.persist(cliente);
+			result = new Mensaje("EstablecerVisibilidad", "OK");
 		} else
-			result = new Mensaje("GetPuntajeCliente", usuario
+			result = new Mensaje("EstablecerVisibilidad", usuario
 					+ "::USUARIO_EXISTENTE");
 		return result;
 	}
@@ -313,7 +314,7 @@ public class Clientes {
 		txn.begin();
 		Cliente cliente = mgr.find(Cliente.class, usuario);
 		if (cliente != null) {
-			if (cliente.getPuntaje() > puntos) {
+			if (cliente.getPuntaje() >= puntos) {
 				cliente.setPuntaje(cliente.getPuntaje() - puntos);
 				mgr.persist(cliente);
 				txn.commit();
@@ -392,8 +393,12 @@ public class Clientes {
 		Iterator<String> ilamigos = obtenerAmigosANotificar(mgr, usuario)
 				.iterator();
 		MessageEndpoint msgendp = new MessageEndpoint();
+		String amigo = null;
 		while (ilamigos.hasNext()) {
-			msgendp.enviarMensaje(mensaje, usuario);
+			amigo = ilamigos.next();
+			msgendp.enviarMensaje(mensaje, amigo);
+			msgendp.enviarMensaje("Su amigo " + amigo + " esta en el Shopping",
+					usuario);
 		}
 	}
 
