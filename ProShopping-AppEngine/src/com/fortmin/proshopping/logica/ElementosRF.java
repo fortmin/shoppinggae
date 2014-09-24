@@ -155,6 +155,7 @@ public class ElementosRF {
 	    if (beacon != null) {
 		beacon.setUltCliente(usuario);
 		mgr.persist(beacon);
+		resp = new Mensaje("EstablecerClienteCerca", "OK");
 		trans.commit();
 	    } else {
 		resp = new Mensaje("EstablecerClienteCerca", elemRf
@@ -166,6 +167,7 @@ public class ElementosRF {
 	    if (tag != null) {
 		tag.setUltCliente(usuario);
 		mgr.persist(tag);
+		resp = new Mensaje("EstablecerClienteCerca", "OK");
 		trans.commit();
 	    } else {
 		resp = new Mensaje("EstablecerClienteCerca", elemRf
@@ -174,7 +176,7 @@ public class ElementosRF {
 	    }
 	} else {
 	    resp = new Mensaje("EstablecerClienteCerca", elemRf
-		    + "::TAG_INEXISTENTE");
+		    + "::ELEMRF_INEXISTENTE");
 	    trans.rollback();
 	}
 	return resp;
@@ -191,15 +193,16 @@ public class ElementosRF {
 	    Beacon beacon = mgr.find(Beacon.class, elemRf);
 	    if (beacon != null) {
 		String cliente = beacon.getUltCliente();
-		if (cliente == null)
+		if (cliente == null) {
 		    resp = new Mensaje("GetClienteCerca", elemRf
 			    + "::SIN_CLIENTE");
-		else {
+		    trans.rollback();
+		} else {
 		    beacon.setUltCliente(null);
 		    mgr.persist(beacon);
 		    resp = new Mensaje("GetClienteCerca", "OK", cliente);
+		    trans.commit();
 		}
-		trans.commit();
 	    } else {
 		resp = new Mensaje("GetClienteCerca", elemRf
 			+ "::BEACON_INEXISTENTE");
@@ -223,6 +226,10 @@ public class ElementosRF {
 			+ "::TAG_INEXISTENTE");
 		trans.rollback();
 	    }
+	} else {
+	    resp = new Mensaje("GetClienteCerca", elemRf
+		    + "::ELEMRF_INEXISTENTE");
+	    trans.rollback();
 	}
 	return resp;
     }
