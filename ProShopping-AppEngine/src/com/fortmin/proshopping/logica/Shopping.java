@@ -307,6 +307,17 @@ public class Shopping {
     }
 
     /*
+     * Obtener la ultima ubicacion del cliente
+     */
+    @ApiMethod(name = "GetUbicacionCliente", path = "get_ubicacion_cliente")
+    public Mensaje getUbicacionCliente(@Named("usuario") String usuario) {
+	EntityManager mgr = getEntityManager();
+	Clientes clis = new Clientes();
+	Mensaje resp = clis.getUbicacionCliente(mgr, usuario);
+	return resp;
+    }
+
+    /*
      * Obtener una referencia al EntityManager
      */
     private static EntityManager getEntityManager() {

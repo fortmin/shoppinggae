@@ -5,87 +5,83 @@ import java.util.LinkedList;
 import com.fortmin.proshopping.entidades.Compra;
 
 public class ComprasVO {
-	
-	private String compra;
-	private String cliente;
-	private boolean entregada;
-	private int cantItems;
-	private int puntosOtorgados;
-	private float precioTotal;
-	private LinkedList<PaqueteVO> paquetes;
-	
-	public ComprasVO(Compra c) {
-		this.compra = c.getCompra();
-		this.cliente = c.getCliente();
-		this.entregada = c.isEntregada();
-		this.cantItems = c.getCantItems();
-		this.precioTotal = c.getPrecioTotal();
-		this.puntosOtorgados = c.getPuntosOtorgados();
-		this.paquetes = new LinkedList<PaqueteVO>();
-	}
-	
-	public void agregarPaquete(PaqueteVO paquete) {
-		paquetes.addLast(paquete);
-		cantItems += 1;
-		puntosOtorgados += paquete.getPuntos();
-		precioTotal += paquete.getPrecio();
-	}
 
-	public String getCompra() {
-		return compra;
-	}
+    private String compra;
+    private String cliente;
+    private boolean entregada;
+    private int cantItems;
+    private int puntosOtorgados;
+    private float precioTotal;
+    private LinkedList<PaqueteVO> paquetes;
 
-	public void setCompra(String compra) {
-		this.compra = compra;
-	}
+    public ComprasVO(Compra c) {
+	this.compra = c.getCompra();
+	this.cliente = c.getCliente();
+	this.entregada = c.isEntregada();
+	this.cantItems = c.getCantItems();
+	this.precioTotal = c.getPrecioTotal();
+	this.puntosOtorgados = c.getPuntosOtorgados();
+	this.paquetes = new LinkedList<PaqueteVO>();
+    }
 
-	public String getCliente() {
-		return cliente;
-	}
+    public void agregarPaquete(PaqueteVO paquete) {
+	paquetes.addLast(paquete);
+    }
 
-	public void setCliente(String cliente) {
-		this.cliente = cliente;
-	}
+    public String getCompra() {
+	return compra;
+    }
 
-	public boolean isEntregada() {
-		return entregada;
-	}
+    public void setCompra(String compra) {
+	this.compra = compra;
+    }
 
-	public void setEntregada(boolean entregada) {
-		this.entregada = entregada;
-	}
+    public String getCliente() {
+	return cliente;
+    }
 
-	public int getCantItems() {
-		return cantItems;
-	}
+    public void setCliente(String cliente) {
+	this.cliente = cliente;
+    }
 
-	public void setCantItems(int cantItems) {
-		this.cantItems = cantItems;
-	}
+    public boolean isEntregada() {
+	return entregada;
+    }
 
-	public int getPuntosOtorgados() {
-		return puntosOtorgados;
-	}
+    public void setEntregada(boolean entregada) {
+	this.entregada = entregada;
+    }
 
-	public void setPuntosOtorgados(int puntosO) {
-		this.puntosOtorgados = puntosO;
-	}
+    public int getCantItems() {
+	return cantItems;
+    }
 
-	public float getPrecioTotal() {
-		return precioTotal;
-	}
+    public void setCantItems(int cantItems) {
+	this.cantItems = cantItems;
+    }
 
-	public void setPrecioTotal(float precioTotal) {
-		this.precioTotal = precioTotal;
-	}
+    public int getPuntosOtorgados() {
+	return puntosOtorgados;
+    }
 
-	public LinkedList<PaqueteVO> getPaquetes() {
-		return paquetes;
-	}
+    public void setPuntosOtorgados(int puntosO) {
+	this.puntosOtorgados = puntosO;
+    }
 
-	public void setPaquetes(LinkedList<PaqueteVO> paquetes) {
-		this.paquetes = paquetes;
-	}
+    public float getPrecioTotal() {
+	return precioTotal;
+    }
 
+    public void setPrecioTotal(float precioTotal) {
+	this.precioTotal = precioTotal;
+    }
+
+    public LinkedList<PaqueteVO> getPaquetes() {
+	return paquetes;
+    }
+
+    public void setPaquetes(LinkedList<PaqueteVO> paquetes) {
+	this.paquetes = paquetes;
+    }
 
 }
