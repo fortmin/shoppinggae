@@ -61,9 +61,10 @@ public class Productos {
 	ProductoExtVO resp = null;
 	Producto producto = new Producto(comercio, codigo);
 	producto = mgr.find(Producto.class, producto.getClave());
-	if (producto != null) {
+	if (producto != null)
 	    resp = new ProductoExtVO(producto);
-	}
+	else
+	    resp = new ProductoExtVO();
 	return resp;
     }
 
