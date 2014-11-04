@@ -11,6 +11,14 @@ public class ProductoExtVO {
     private float precio;
     private String detalles;
 
+    public ProductoExtVO() {
+	this.comercio = "NONE";
+	this.codigo = "NONE";
+	this.nombre = "NONE";
+	this.precio = 0;
+	this.detalles = "NONE";
+    }
+
     public ProductoExtVO(String comercio, String codigo, String nombre,
 	    float precio, String detalles, Blob imagen, String tipoImg) {
 	this.comercio = comercio;
